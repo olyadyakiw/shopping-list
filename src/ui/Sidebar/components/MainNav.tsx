@@ -18,9 +18,11 @@ export default function MainNav() {
                     <li key={link.to}>
                         <NavLink
                             to={link.to}
-                            className="flex items-center gap-2 px-4 py-2 transition-all hover:bg-blue-100 rounded-lg"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-4 py-2 transition-all hover:bg-blue-100 rounded-lg ${isActive ? 'bg-blue-200' : ''}`
+                            }
                         >
-                            <span className="text-blue-400">{link.icon}</span>
+                            <span className="text-blue-500">{link.icon}</span>
                             <span>{link.name}</span>
                         </NavLink>
                     </li>

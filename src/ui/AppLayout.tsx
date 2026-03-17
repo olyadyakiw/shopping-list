@@ -5,10 +5,8 @@ export default function AppLayout() {
     return (
         <div className="flex gap-3 h-full">
             <Sidebar />
-            <div>
-                <div>
-                    <Outlet />
-                </div>
+            <div className="w-full ps-60">
+                <Outlet />
             </div>
         </div>
     )
