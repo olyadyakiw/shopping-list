@@ -1,4 +1,4 @@
-import ProductsList from '../features/products-list'
+import ProductsList from '../features/products-list/ProductsList'
 
 export default function ShoppingList() {
     return (
