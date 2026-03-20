@@ -1,25 +1,30 @@
+import { useState } from 'react'
 import AddNewProduct from './components/AddNewProduct'
 import Product from './components/Product'
-import type { Products } from './types'
+import type { Products, Product as ProductType } from './types'
 
-const products: Products = [
-    {
-        name: 'tomato',
-        count: 1,
-    },
-    {
-        name: 'tomato',
-        count: 1,
-    },
-]
+const initialProducts: Products = [{ name: 'tomato', count: 1, checked: true }]
 
 export default function ProductsList() {
+    const [products, setProducts] = useState<Products>(initialProducts)
+
+    const handleAddProduct = (product: ProductType) => {
+        setProducts(prev => [...prev, product])
+    }
+
     return (
         <div className="max-w-100">
-            <AddNewProduct />
+            <AddNewProduct onAdd={handleAddProduct} />
             <ul>
-                {products.map(product => {
-                    return <Product key={product.name} name={product.name} count={product.count} />
+                {products.map((product, index) => {
+                    return (
+                        <Product
+                            key={`${product.name}-${index}`}
+                            name={product.name}
+                            count={product.count}
+                            checked={product.checked}
+                        />
+                    )
                 })}
             </ul>
         </div>
