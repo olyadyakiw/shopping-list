@@ -1,9 +1,9 @@
 import { IoIosClose } from 'react-icons/io'
 
-import type { Product } from '../types'
+import type { Product, ProductProps } from '../types'
 import { useState } from 'react'
 
-export default function Product({ name, count, checked }: Product) {
+export default function Product({ name, count, checked, onDelete }: ProductProps) {
     const [isChecked, setIsChecked] = useState(checked)
 
     return (
@@ -15,7 +15,7 @@ export default function Product({ name, count, checked }: Product) {
                 </div>
                 <div className="flex gap-2 items-center">
                     {count}
-                    <button>
+                    <button onClick={() => onDelete(name)}>
                         <IoIosClose className="size-8" />
                     </button>
                 </div>

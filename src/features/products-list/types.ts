@@ -5,3 +5,7 @@ export type Product = {
 }
 
 export type Products = Product[]
+
+export type ProductProps = Product & {
+    onDelete: (name: string) => void
+}

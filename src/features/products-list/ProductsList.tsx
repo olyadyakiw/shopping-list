@@ -3,13 +3,17 @@ import AddNewProduct from './components/AddNewProduct'
 import Product from './components/Product'
 import type { Products, Product as ProductType } from './types'
 
-const initialProducts: Products = [{ name: 'tomato', count: 1, checked: true }]
+const initialProducts: Products = []
 
 export default function ProductsList() {
     const [products, setProducts] = useState<Products>(initialProducts)
 
     const handleAddProduct = (product: ProductType) => {
         setProducts(prev => [...prev, product])
+    }
+
+    const handleDeleteProduct = (name: string) => {
+        setProducts(prev => prev.filter(item => item.name !== name))
     }
 
     return (
@@ -23,6 +27,7 @@ export default function ProductsList() {
                             name={product.name}
                             count={product.count}
                             checked={product.checked}
+                            onDelete={handleDeleteProduct}
                         />
                     )
                 })}
