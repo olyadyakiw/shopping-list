@@ -2,11 +2,11 @@ import { useState } from 'react'
 import AddNewProduct from './components/AddNewProduct'
 import Product from './components/Product'
 import type { Products, Product as ProductType } from './types'
-
-const initialProducts: Products = []
+import { useProducts } from './useProducts'
 
 export default function ProductsList() {
-    const [products, setProducts] = useState<Products>(initialProducts)
+    const { products, isLoading } = useProducts()
+    const [_, setProducts] = useState<Products>(products)
 
     const handleAddProduct = (product: ProductType) => {
         setProducts(prev => [...prev, product])
@@ -17,7 +17,7 @@ export default function ProductsList() {
     }
 
     return (
-        <div className="max-w-100">
+        <div className="max-w-96">
             <AddNewProduct onAdd={handleAddProduct} />
             <ul>
                 {products.map((product, index) => {
@@ -26,7 +26,7 @@ export default function ProductsList() {
                             key={`${product.name}-${index}`}
                             name={product.name}
                             count={product.count}
-                            checked={product.checked}
+                            isChecked={product.isChecked}
                             onDelete={handleDeleteProduct}
                         />
                     )

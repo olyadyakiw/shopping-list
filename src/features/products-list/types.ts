@@ -1,7 +1,7 @@
 export type Product = {
     name: string
     count: number
-    checked: boolean
+    isChecked: boolean
 }
 
 export type Products = Product[]
