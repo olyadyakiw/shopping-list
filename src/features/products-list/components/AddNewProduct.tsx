@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import { CiSquarePlus } from 'react-icons/ci'
-import type { Product } from '../types'
+import { useAddProduct } from '../useAddProduct'
 
-type Props = {
-    onAdd: (product: Product) => void
-}
-
-export default function AddNewProduct({ onAdd }: Props) {
+export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
     const [product, setProduct] = useState('')
     const [count, setCount] = useState(1)
+    const [units, setUnits] = useState('Pieces')
+    const [category, setCategory] = useState('Vegetables')
+
+    const { isCreating, addProduct } = useAddProduct()
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (product) {
-            onAdd({ name: product, count, checked: false })
+            const item = { name: product, count, units, category, isChecked: false }
+            addProduct(item)
         }
         setProduct('')
         setCount(1)
@@ -45,8 +46,28 @@ export default function AddNewProduct({ onAdd }: Props) {
                         type="number"
                     />
                 </label>
+                <label className="flex flex-col gap-2 mb-2">
+                    <span>Units: </span>
+                    <select value={units} onChange={e => setUnits(e.target.value)} className="border-2 border-black">
+                        <option value="pieces">Pieces</option>
+                        <option value="litres">Litres</option>
+                        <option value="Gramms">Gramms</option>
+                    </select>
+                </label>
+                <label className="flex flex-col gap-2 mb-2">
+                    <span>Category: </span>
+                    <select
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
+                        className="border-2 border-black"
+                    >
+                        <option value="pieces">Vegetables</option>
+                        <option value="litres">Meat</option>
+                        <option value="Gramms">House</option>
+                    </select>
+                </label>
                 <div className="flex gap-3">
-                    <button className="cursor-pointer border-2 black px-6 py-3" type="submit">
+                    <button disabled={isCreating} className="cursor-pointer border-2 black px-6 py-3" type="submit">
                         Add
                     </button>
                     <button
