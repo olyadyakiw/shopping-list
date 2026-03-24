@@ -1,10 +1,12 @@
 import { IoIosClose } from 'react-icons/io'
 
-import type { Product, ProductProps } from '../types'
+import type { Product } from '../types'
 import { useUpdateProduct } from '../useUpdateProduct'
+import { useDeleteProduct } from '../useDeleteProduct'
 
-export default function Product({ id, name, count, isChecked, onDelete }: ProductProps) {
+export default function Product({ id, name, count, units, isChecked }: Product) {
     const { updateProduct, isPending } = useUpdateProduct()
+    const { deleteProduct, isCreating } = useDeleteProduct()
     return (
         <li>
             <label className="flex justify-between items-center gap-2">
@@ -18,8 +20,8 @@ export default function Product({ id, name, count, isChecked, onDelete }: Produc
                     {name}
                 </div>
                 <div className="flex gap-2 items-center">
-                    {count}
-                    <button onClick={() => onDelete(name)}>
+                    {count} {units}
+                    <button className="cursor-pointer" disabled={isCreating} onClick={() => id && deleteProduct(id)}>
                         <IoIosClose className="size-8" />
                     </button>
                 </div>

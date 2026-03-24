@@ -37,3 +37,14 @@ export async function updateProduct(id: number, updates: Partial<Product>) {
 
     return data
 }
+
+export async function deleteProduct(id: number) {
+    const { data, error } = await supabase.from('products').delete().eq('id', id)
+
+    if (error) {
+        console.error(error)
+        throw new Error('Product could not be updated')
+    }
+
+    return data
+}
