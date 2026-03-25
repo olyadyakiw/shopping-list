@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { CiSquarePlus } from 'react-icons/ci'
 import { useAddProduct } from '../useAddProduct'
+import type { Product } from '../types'
 
 export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
     const [product, setProduct] = useState('')
     const [count, setCount] = useState(1)
     const [units, setUnits] = useState('Pieces')
-    const [category, setCategory] = useState('Vegetables')
+    const [category, setCategory] = useState<Product['category']>('Dairy')
 
     const { isCreating, addProduct } = useAddProduct()
 
@@ -58,12 +59,17 @@ export default function AddNewProduct() {
                     <span>Category: </span>
                     <select
                         value={category}
-                        onChange={e => setCategory(e.target.value)}
+                        onChange={e => setCategory(e.target.value as Product['category'])}
                         className="border-2 border-black"
                     >
-                        <option value="pieces">Vegetables</option>
-                        <option value="litres">Meat</option>
-                        <option value="Gramms">House</option>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Meat & Fish">Meat & Fish</option>
+                        <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                        <option value="Bakery">Bakery</option>
+                        <option value="Frozen">Frozen</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Household">Household</option>
+                        <option value="Personal Care">Personal Care</option>
                     </select>
                 </label>
                 <div className="flex gap-3">

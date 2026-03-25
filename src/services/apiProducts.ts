@@ -43,7 +43,7 @@ export async function deleteProduct(id: number) {
 
     if (error) {
         console.error(error)
-        throw new Error('Product could not be updated')
+        throw new Error('Product could not be deleted')
     }
 
     return data
