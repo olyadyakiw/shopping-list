@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { CiSquarePlus } from 'react-icons/ci'
-import { useAddProduct } from '../useAddProduct'
+import { useAddProduct } from '../hooks/useAddProduct'
 import type { Product } from '../types'
+import { useProducts } from '../hooks/useProducts'
+import { useUpdateProduct } from '../hooks/useUpdateProduct'
 
 export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
@@ -11,12 +13,19 @@ export default function AddNewProduct() {
     const [category, setCategory] = useState<Product['category']>('Dairy')
 
     const { isCreating, addProduct } = useAddProduct()
+    const { products } = useProducts()
+    const { updateProduct } = useUpdateProduct()
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (product) {
-            const item = { name: product, count, units, category, isChecked: false }
-            addProduct(item)
+            const existing = products.find((p: Product) => p.name === product)
+            if (existing) {
+                updateProduct({ id: existing.id!, updates: { count: existing.count + count } })
+            } else {
+                const item = { name: product, count, units, category, isChecked: false }
+                addProduct(item)
+            }
         }
         setProduct('')
         setCount(1)

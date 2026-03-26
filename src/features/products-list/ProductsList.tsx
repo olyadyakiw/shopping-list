@@ -1,7 +1,7 @@
 import AddNewProduct from './components/AddNewProduct'
 import Product from './components/Product'
 import type { Product as ProductType } from './types'
-import { useProducts } from './useProducts'
+import { useProducts } from './hooks/useProducts'
 
 export default function ProductsList() {
     const { products, isLoading } = useProducts()

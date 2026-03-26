@@ -2,7 +2,11 @@ import type { Product } from '../features/products-list/types'
 import supabase from './supabase'
 
 export async function getProducts() {
-    const { data, error } = await supabase.from('products').select('*')
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('isChecked', { ascending: true })
+        .order('created_at', { ascending: true })
     console.log(data)
 
     if (error) {

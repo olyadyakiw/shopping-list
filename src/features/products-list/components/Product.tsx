@@ -1,8 +1,8 @@
 import { IoIosClose } from 'react-icons/io'
 
 import type { Product } from '../types'
-import { useUpdateProduct } from '../useUpdateProduct'
-import { useDeleteProduct } from '../useDeleteProduct'
+import { useUpdateProduct } from '../hooks/useUpdateProduct'
+import { useDeleteProduct } from '../hooks/useDeleteProduct'
 
 export default function Product({ id, name, count, units, isChecked }: Product) {
     const { updateProduct, isPending } = useUpdateProduct()
