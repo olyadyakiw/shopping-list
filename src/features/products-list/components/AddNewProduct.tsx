@@ -4,6 +4,9 @@ import { useAddProduct } from '../hooks/useAddProduct'
 import type { Product } from '../types'
 import { useProducts } from '../hooks/useProducts'
 import { useUpdateProduct } from '../hooks/useUpdateProduct'
+import Select from '../../../ui/Select'
+import { unitsOption } from '../../../constants/unitsOption'
+import { categoryOptions } from '../../../constants/categoryOption'
 
 export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
@@ -56,31 +59,8 @@ export default function AddNewProduct() {
                         type="number"
                     />
                 </label>
-                <label className="flex flex-col gap-2 mb-2">
-                    <span>Units: </span>
-                    <select value={units} onChange={e => setUnits(e.target.value)} className="border-2 border-black">
-                        <option value="pieces">Pieces</option>
-                        <option value="litres">Litres</option>
-                        <option value="Gramms">Gramms</option>
-                    </select>
-                </label>
-                <label className="flex flex-col gap-2 mb-2">
-                    <span>Category: </span>
-                    <select
-                        value={category}
-                        onChange={e => setCategory(e.target.value as Product['category'])}
-                        className="border-2 border-black"
-                    >
-                        <option value="Dairy">Dairy</option>
-                        <option value="Meat & Fish">Meat & Fish</option>
-                        <option value="Fruits & Vegetables">Fruits & Vegetables</option>
-                        <option value="Bakery">Bakery</option>
-                        <option value="Frozen">Frozen</option>
-                        <option value="Snacks">Snacks</option>
-                        <option value="Household">Household</option>
-                        <option value="Personal Care">Personal Care</option>
-                    </select>
-                </label>
+                <Select label="Units" value={units} onChange={setUnits} options={unitsOption} />
+                <Select label="Category" value={category} onChange={setCategory} options={categoryOptions} />
                 <div className="flex gap-3">
                     <button disabled={isCreating} className="cursor-pointer border-2 black px-6 py-3" type="submit">
                         Add
