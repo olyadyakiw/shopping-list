@@ -3,6 +3,7 @@ import { IoIosClose } from 'react-icons/io'
 import type { Product } from '../types'
 import { useUpdateProduct } from '../hooks/useUpdateProduct'
 import { useDeleteProduct } from '../hooks/useDeleteProduct'
+import { Button } from '@/components/ui/button'
 
 export default function Product({ id, name, count, units, isChecked }: Product) {
     const { updateProduct, isPending } = useUpdateProduct()
@@ -21,9 +22,9 @@ export default function Product({ id, name, count, units, isChecked }: Product) 
                 </div>
                 <div className="flex gap-2 items-center">
                     {count} {units}
-                    <button className="cursor-pointer" disabled={isCreating} onClick={() => id && deleteProduct(id)}>
+                    <Button className="cursor-pointer" disabled={isCreating} onClick={() => id && deleteProduct(id)}>
                         <IoIosClose className="size-8" />
-                    </button>
+                    </Button>
                 </div>
             </label>
         </li>

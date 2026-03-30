@@ -6,7 +6,7 @@ export type Option<T> = {
 type SelectProps<T extends string> = {
     label: string
     value: T
-    onChange: React.Dispatch<React.SetStateAction<T>>
+    onChange: (value: T) => void
     options: Option<T>[]
 }
 
