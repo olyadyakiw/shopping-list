@@ -4,7 +4,7 @@ import { useAddProduct } from '../hooks/useAddProduct'
 import type { Product } from '../types'
 import { useProducts } from '../hooks/useProducts'
 import { useUpdateProduct } from '../hooks/useUpdateProduct'
-import Select from '../../../ui/Select'
+import SelectField from '../../../ui/Select'
 import { unitsOption } from '../../../constants/unitsOption'
 import { categoryOptions } from '../../../constants/categoryOption'
 import { InputField } from '@/ui/Input'
@@ -68,29 +68,25 @@ export default function AddNewProduct() {
                     error={formik.touched.count ? formik.errors.count : undefined}
                 />
 
-                <Select
+                <SelectField
                     label="Units"
                     value={formik.values.units}
                     onChange={value => formik.setFieldValue('units', value)}
                     options={unitsOption}
                 />
-                <Select
+                <SelectField
                     label="Category"
                     value={formik.values.category}
                     onChange={value => formik.setFieldValue('category', value)}
                     options={categoryOptions}
                 />
                 <div className="flex gap-3">
-                    <button disabled={isCreating} className="cursor-pointer border-2 black px-6 py-3" type="submit">
+                    <Button disabled={isCreating} type="submit">
                         Add
-                    </button>
-                    <button
-                        onClick={() => isShowForm(false)}
-                        className="cursor-pointer border-2 black px-6 py-3"
-                        type="button"
-                    >
+                    </Button>
+                    <Button onClick={() => isShowForm(false)} type="button">
                         Close
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

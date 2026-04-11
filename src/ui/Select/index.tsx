@@ -1,3 +1,5 @@
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 export type Option<T> = {
     val: T
     name: string
@@ -10,18 +12,24 @@ type SelectProps<T extends string> = {
     options: Option<T>[]
 }
 
-export default function Select<T extends string>({ label, value, onChange, options }: SelectProps<T>) {
+export default function SelectField<T extends string>({ label, value, onChange, options }: SelectProps<T>) {
     return (
-        <label className="flex flex-col gap-2 mb-2">
-            <span>{label}:</span>
-
-            <select value={value} onChange={e => onChange(e.target.value as T)} className="border-2 border-black">
-                {options.map(option => (
-                    <option key={option.val} value={option.val}>
-                        {option.name}
-                    </option>
-                ))}
-            </select>
+        <label className="flex flex-col gap-1 mb-2">
+            <span className="text-sm">{label}:</span>
+            <Select value={value} onValueChange={onChange}>
+                <SelectTrigger className="w-full">
+                    <SelectValue placeholder={`Select ${label}`} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {options.map(option => (
+                            <SelectItem key={option.val} value={option.val}>
+                                {option.name}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </label>
     )
 }
