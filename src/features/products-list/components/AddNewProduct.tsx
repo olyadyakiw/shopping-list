@@ -4,13 +4,12 @@ import { useAddProduct } from '../hooks/useAddProduct'
 import type { Product } from '../types'
 import { useProducts } from '../hooks/useProducts'
 import { useUpdateProduct } from '../hooks/useUpdateProduct'
-import SelectField from '../../../ui/Select'
-import { unitsOption } from '../../../constants/unitsOption'
-import { categoryOptions } from '../../../constants/categoryOption'
 import { InputField } from '@/ui/Input'
 import { useFormik } from 'formik'
 import { validationSchema } from '@/ui/Input/validationSchema'
 import { Button } from '@/components/ui/button'
+import ComboboxBasic from '@/ui/Combobox'
+import { useCatalog } from '../hooks/useCatalog'
 
 export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
@@ -19,8 +18,8 @@ export default function AddNewProduct() {
         initialValues: {
             product: '',
             count: 1,
-            category: 'Dairy',
-            units: 'pieces',
+            units: '',
+            category: '',
         },
         validationSchema: validationSchema,
         onSubmit: values => {
@@ -28,6 +27,7 @@ export default function AddNewProduct() {
                 const existing = products.find((p: Product) => p.name === values.product)
                 if (existing) {
                     updateProduct({ id: existing.id!, updates: { count: existing.count + values.count } })
+                    formik.resetForm()
                 } else {
                     const item = {
                         name: values.product,
@@ -37,6 +37,7 @@ export default function AddNewProduct() {
                         isChecked: false,
                     }
                     addProduct(item)
+                    formik.resetForm()
                 }
             }
         },
@@ -45,6 +46,9 @@ export default function AddNewProduct() {
     const { isCreating, addProduct } = useAddProduct()
     const { products } = useProducts()
     const { updateProduct } = useUpdateProduct()
+    const { catalog } = useCatalog()
+
+    console.log(catalog)
 
     return (
         <div className="flex gap-3 flex-col">
@@ -53,12 +57,18 @@ export default function AddNewProduct() {
                 Add new product
             </Button>
             <form onSubmit={formik.handleSubmit} className={`${showForm ? '' : 'hidden'}`}>
-                <InputField
-                    fieldName="Product"
-                    placeholder="Add new product"
-                    type="text"
-                    error={formik.touched.product ? formik.errors.product : undefined}
-                    {...formik.getFieldProps('product')}
+                <ComboboxBasic
+                    label="Products"
+                    value={formik.values.product}
+                    onChange={value => {
+                        const catalogItem = catalog.find(item => item.name === value)
+                        formik.setFieldValue('product', value)
+                        if (catalogItem) {
+                            formik.setFieldValue('units', catalogItem.units)
+                            formik.setFieldValue('category', catalogItem.category)
+                        }
+                    }}
+                    options={catalog.map(item => item.name)}
                 />
                 <InputField
                     fieldName="Count"
@@ -66,19 +76,6 @@ export default function AddNewProduct() {
                     type="number"
                     {...formik.getFieldProps('count')}
                     error={formik.touched.count ? formik.errors.count : undefined}
-                />
-
-                <SelectField
-                    label="Units"
-                    value={formik.values.units}
-                    onChange={value => formik.setFieldValue('units', value)}
-                    options={unitsOption}
-                />
-                <SelectField
-                    label="Category"
-                    value={formik.values.category}
-                    onChange={value => formik.setFieldValue('category', value)}
-                    options={categoryOptions}
                 />
                 <div className="flex gap-3">
                     <Button disabled={isCreating} type="submit">
