@@ -48,8 +48,6 @@ export default function AddNewProduct() {
     const { updateProduct } = useUpdateProduct()
     const { catalog } = useCatalog()
 
-    console.log(catalog)
-
     return (
         <div className="flex gap-3 flex-col">
             <Button onClick={() => isShowForm(!showForm)} className="flex gap-2 items-center mb-2 cursor-pointer">
