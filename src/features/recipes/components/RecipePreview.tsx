@@ -1,9 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import type { Recipe } from '../types'
-import ProductsList from '@/features/products-list/ProductsList'
 import { useFormik } from 'formik'
 import { validationSchema } from '@/ui/Input/validationSchema'
 import { InputField } from '@/ui/Input'
+import Ingredient from './Ingredient'
+import { Button } from '@/components/ui/button'
+import { useAddRecipeToList } from '../hooks/useAddRecipeToList'
 
 type Props = {
     recipe: Recipe | null
@@ -12,6 +14,8 @@ type Props = {
 }
 
 export default function RecipePreview({ recipe, open, onClose }: Props) {
+    const { addRecipeToList } = useAddRecipeToList()
+
     const formik = useFormik({
         initialValues: {
             count: 1,
@@ -36,8 +40,10 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                     {...formik.getFieldProps('count')}
                     error={formik.touched.count ? formik.errors.count : undefined}
                 />
-
-                <ProductsList />
+                {recipe?.ingredients.map(ingredient => {
+                    return <Ingredient key={ingredient.id} {...ingredient} />
+                })}
+                <Button onClick={() => addRecipeToList(recipe!)}>Add</Button>
             </DialogContent>
         </Dialog>
     )
