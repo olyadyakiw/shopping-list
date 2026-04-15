@@ -8,16 +8,16 @@ export function useAddRecipeToList() {
     const { addProduct } = useAddProduct()
     const { updateProduct } = useUpdateProduct()
 
-    function addRecipeToList(recipe: Recipe) {
+    function addRecipeToList(recipe: Recipe, count: number) {
         recipe.ingredients.forEach(ingredient => {
             const ingr = ingredient.catalog
             const existing = products.find(p => p.name === ingr.name)
             if (existing) {
-                updateProduct({ id: existing.id!, updates: { count: existing.count + ingredient.count } })
+                updateProduct({ id: existing.id!, updates: { count: existing.count + ingredient.count * count } })
             } else {
                 addProduct({
                     name: ingr.name,
-                    count: ingredient.count,
+                    count: ingredient.count * count,
                     category: ingr.category,
                     units: ingr.units,
                     isChecked: false,

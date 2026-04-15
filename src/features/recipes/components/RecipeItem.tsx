@@ -6,9 +6,10 @@ import { useAddRecipeToList } from '../hooks/useAddRecipeToList'
 type Props = {
     recipe: Recipe
     onPreview: () => void
+    count: number
 }
 
-function RecipeItem({ recipe, onPreview }: Props) {
+function RecipeItem({ recipe, onPreview, count }: Props) {
     const { addRecipeToList } = useAddRecipeToList()
     return (
         <Card>
@@ -17,7 +18,7 @@ function RecipeItem({ recipe, onPreview }: Props) {
             </CardHeader>
             <CardFooter>
                 <Button onClick={onPreview}>Preview</Button>
-                <Button onClick={() => addRecipeToList(recipe)}>Add</Button>
+                <Button onClick={() => addRecipeToList(recipe, count)}>Add</Button>
             </CardFooter>
         </Card>
     )

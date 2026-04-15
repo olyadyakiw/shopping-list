@@ -18,13 +18,18 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
 
     const formik = useFormik({
         initialValues: {
-            count: 1,
+            count: 2,
         },
         validationSchema: validationSchema,
         onSubmit: values => {
             console.log(values)
         },
     })
+
+    function handleAddButton() {
+        addRecipeToList(recipe!, formik.values.count)
+        onClose()
+    }
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -41,9 +46,10 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                     error={formik.touched.count ? formik.errors.count : undefined}
                 />
                 {recipe?.ingredients.map(ingredient => {
-                    return <Ingredient key={ingredient.id} {...ingredient} />
+                    const ingrCount = (ingredient.count * +formik.values.count).toFixed(2)
+                    return <Ingredient key={ingredient.id} {...ingredient} count={+ingrCount} />
                 })}
-                <Button onClick={() => addRecipeToList(recipe!)}>Add</Button>
+                <Button onClick={handleAddButton}>Add</Button>
             </DialogContent>
         </Dialog>
     )
