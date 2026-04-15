@@ -9,10 +9,13 @@ import { useFormik } from 'formik'
 import { validationSchema } from '@/ui/Input/validationSchema'
 import { Button } from '@/components/ui/button'
 import ComboboxBasic from '@/ui/Combobox'
-import { useCatalog } from '../hooks/useCatalog'
+import { useCatalog } from '@/hooks/useCatalog'
+import AddProductModal from './AddProductModal'
 
 export default function AddNewProduct() {
     const [showForm, isShowForm] = useState(false)
+    const [showModal, isShowModal] = useState(false)
+    const [searchText, setSearchText] = useState('')
 
     const formik = useFormik({
         initialValues: {
@@ -48,6 +51,15 @@ export default function AddNewProduct() {
     const { updateProduct } = useUpdateProduct()
     const { catalog } = useCatalog()
 
+    const handleComboboxChange = (value: string) => {
+        const catalogItem = catalog.find(item => item.name === value)
+        formik.setFieldValue('product', value)
+        if (catalogItem) {
+            formik.setFieldValue('units', catalogItem.units)
+            formik.setFieldValue('category', catalogItem.category)
+        }
+    }
+
     return (
         <div className="flex gap-3 flex-col">
             <Button onClick={() => isShowForm(!showForm)} className="flex gap-2 items-center mb-2 cursor-pointer">
@@ -56,17 +68,18 @@ export default function AddNewProduct() {
             </Button>
             <form onSubmit={formik.handleSubmit} className={`${showForm ? '' : 'hidden'}`}>
                 <ComboboxBasic
+                    key={showModal ? 'open' : 'closed'}
                     label="Products"
                     value={formik.values.product}
-                    onChange={value => {
-                        const catalogItem = catalog.find(item => item.name === value)
-                        formik.setFieldValue('product', value)
-                        if (catalogItem) {
-                            formik.setFieldValue('units', catalogItem.units)
-                            formik.setFieldValue('category', catalogItem.category)
-                        }
-                    }}
+                    onChange={value => handleComboboxChange(value)}
+                    onSearchChange={setSearchText}
                     options={catalog.map(item => item.name)}
+                    inputValue={searchText}
+                    emptyContent={
+                        <Button type="button" onClick={() => isShowModal(true)}>
+                            + Add "{searchText}"
+                        </Button>
+                    }
                 />
                 <InputField
                     fieldName="Count"
@@ -84,6 +97,14 @@ export default function AddNewProduct() {
                     </Button>
                 </div>
             </form>
+            <AddProductModal
+                open={showModal}
+                onClose={() => {
+                    isShowModal(false)
+                    setSearchText('')
+                }}
+                defaultName={searchText}
+            />
         </div>
     )
 }

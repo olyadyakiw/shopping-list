@@ -14,16 +14,33 @@ type ComboboxProps<T extends string> = {
     value: T
     onChange: (value: T) => void
     options: string[]
+    inputValue?: string
+    emptyContent?: React.ReactNode
+    onSearchChange?: (value: string) => void
 }
 
-export default function ComboboxBasic<T extends string>({ label, value, onChange, options }: ComboboxProps<T>) {
+export default function ComboboxBasic<T extends string>({
+    label,
+    value,
+    onChange,
+    onSearchChange,
+    emptyContent,
+    options,
+    inputValue,
+}: ComboboxProps<T>) {
     return (
         <label className="flex flex-col gap-1 mb-2">
             <span className="text-sm">{label}:</span>
-            <Combobox value={value} onValueChange={val => val && onChange(val as T)} items={options}>
+            <Combobox
+                inputValue={inputValue}
+                onInputValueChange={onSearchChange}
+                value={value}
+                onValueChange={val => val && onChange(val as T)}
+                items={options}
+            >
                 <ComboboxInput placeholder="Choose item" />
                 <ComboboxContent>
-                    <ComboboxEmpty>No items found.</ComboboxEmpty>
+                    <ComboboxEmpty>{emptyContent}</ComboboxEmpty>
                     <ComboboxList>
                         {(option: string) => (
                             <ComboboxItem key={option} value={option}>

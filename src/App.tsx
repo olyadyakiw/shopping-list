@@ -7,6 +7,7 @@ import NewRecipe from './pages/NewPesipe'
 import PageNotFound from './pages/PageNotFound'
 import Login from './pages/Login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Toaster } from './components/ui/sonner'
 
 function App() {
     const queryClient = new QueryClient()
@@ -27,6 +28,7 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
+            <Toaster />
         </QueryClientProvider>
     )
 }
