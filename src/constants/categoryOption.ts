@@ -3,6 +3,7 @@ import type { Option } from '../ui/Select'
 
 export const categoryOptions: Option<Product['category']>[] = [
     { val: 'Dairy', name: 'Dairy' },
+    { val: 'Pantry', name: 'Pantry' },
     { val: 'Meat & Fish', name: 'Meat & Fish' },
     { val: 'Fruits & Vegetables', name: 'Fruits & Vegetables' },
     { val: 'Bakery', name: 'Bakery' },
