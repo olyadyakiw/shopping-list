@@ -60,13 +60,19 @@ export default function AddNewProduct() {
         }
     }
 
+    const onSubmitForm = (e: React.FormEvent) => {
+        e.preventDefault()
+        formik.handleSubmit()
+        setSearchText('')
+    }
+
     return (
         <div className="flex gap-3 flex-col">
             <Button onClick={() => isShowForm(!showForm)} className="flex gap-2 items-center mb-2 cursor-pointer">
                 <CiSquarePlus className="size-6" />
                 Add new product
             </Button>
-            <form onSubmit={formik.handleSubmit} className={`${showForm ? '' : 'hidden'}`}>
+            <form onSubmit={onSubmitForm} className={`${showForm ? '' : 'hidden'}`}>
                 <ComboboxBasic
                     key={showModal ? 'open' : 'closed'}
                     label="Products"
