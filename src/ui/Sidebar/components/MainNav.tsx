@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom'
 
-import { CiViewList } from 'react-icons/ci'
-import { FaPlateWheat } from 'react-icons/fa6'
-import { CgTemplate } from 'react-icons/cg'
+import ChecklistIcon from '@/components/icons/ChecklistIcon'
+import DocTextIcon from '@/components/icons/DocTextIcon'
+import ClipboardIcon from '@/components/icons/ClipboardIcon'
 
 const links = [
-    { name: 'Shopping List', to: 'shopping-list', icon: <CiViewList className="size-8" /> },
-    { name: 'Recipes', to: 'recipes', icon: <FaPlateWheat className="size-8" /> },
-    { name: 'Templates', to: 'templates', icon: <CgTemplate className="size-8" /> },
+    { name: 'Shopping List', to: 'shopping-list', icon: <ChecklistIcon width="20" height="20" fill="currentColor" /> },
+    { name: 'Recipes', to: 'recipes', icon: <DocTextIcon width="20" height="20" fill="currentColor" /> },
+    { name: 'Templates', to: 'templates', icon: <ClipboardIcon width="20" height="20" fill="currentColor" /> },
 ]
 
 export default function MainNav() {
@@ -19,10 +19,10 @@ export default function MainNav() {
                         <NavLink
                             to={link.to}
                             className={({ isActive }) =>
-                                `flex items-center gap-2 px-4 py-2 transition-all hover:bg-blue-100 rounded-lg ${isActive ? 'bg-blue-200' : ''}`
+                                `flex items-center gap-3 px-4 py-3 transition-all hover:bg-light-grey-2 rounded-[20px] ${isActive ? 'bg-medium-grey text-black' : 'text-dark-grey'}`
                             }
                         >
-                            <span className="text-blue-500">{link.icon}</span>
+                            <span>{link.icon}</span>
                             <span>{link.name}</span>
                         </NavLink>
                     </li>
