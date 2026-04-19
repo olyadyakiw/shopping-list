@@ -17,7 +17,7 @@ export default function SelectField<T extends string>({ label, value, onChange, 
         <label className="flex flex-col gap-1 mb-2">
             <span className="text-sm">{label}:</span>
             <Select value={value} onValueChange={onChange}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full bg-white">
                     <SelectValue placeholder={`Select ${label}`} />
                 </SelectTrigger>
                 <SelectContent>

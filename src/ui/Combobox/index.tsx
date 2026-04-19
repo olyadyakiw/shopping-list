@@ -29,8 +29,8 @@ export default function ComboboxBasic<T extends string>({
     inputValue,
 }: ComboboxProps<T>) {
     return (
-        <label className="flex flex-col gap-1 mb-2">
-            <span className="text-sm">{label}:</span>
+        <label className="flex flex-col gap-2 mb-2">
+            <span className="text-base font-semibold">{label}:</span>
             <Combobox
                 inputValue={inputValue}
                 onInputValueChange={onSearchChange}

@@ -11,9 +11,9 @@ import { Button } from '@/components/ui/button'
 import ComboboxBasic from '@/ui/Combobox'
 import { useCatalog } from '@/hooks/useCatalog'
 import AddProductModal from './AddProductModal'
+import BaseButton from '@/ui/BaseButton'
 
 export default function AddNewProduct() {
-    const [showForm, isShowForm] = useState(false)
     const [showModal, isShowModal] = useState(false)
     const [searchText, setSearchText] = useState('')
 
@@ -67,15 +67,12 @@ export default function AddNewProduct() {
     }
 
     return (
-        <div className="flex gap-3 flex-col">
-            <Button onClick={() => isShowForm(!showForm)} className="flex gap-2 items-center mb-2 cursor-pointer">
-                <CiSquarePlus className="size-6" />
-                Add new product
-            </Button>
-            <form onSubmit={onSubmitForm} className={`${showForm ? '' : 'hidden'}`}>
+        <div className="flex flex-col py-10 px-8 bg-light-grey rounded-[30px] w-full">
+            <h2 className="text-2xl font-semibold mb-6">Add product</h2>
+            <form onSubmit={onSubmitForm}>
                 <ComboboxBasic
                     key={showModal ? 'open' : 'closed'}
-                    label="Products"
+                    label="Product List"
                     value={formik.values.product}
                     onChange={value => handleComboboxChange(value)}
                     onSearchChange={setSearchText}
@@ -95,12 +92,14 @@ export default function AddNewProduct() {
                     error={formik.touched.count ? formik.errors.count : undefined}
                 />
                 <div className="flex gap-3">
-                    <Button disabled={isCreating} type="submit">
-                        Add
-                    </Button>
-                    <Button onClick={() => isShowForm(false)} type="button">
-                        Close
-                    </Button>
+                    <BaseButton
+                        disabled={isCreating}
+                        type="submit"
+                        className="mt-2 bg-green hover:bg-green/80 text-light-green w-full"
+                    >
+                        <CiSquarePlus className="size-6 text-light-green" />
+                        Add product
+                    </BaseButton>
                 </div>
             </form>
             <AddProductModal
