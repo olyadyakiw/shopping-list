@@ -7,7 +7,6 @@ import { useUpdateProduct } from '../hooks/useUpdateProduct'
 import { InputField } from '@/ui/Input'
 import { useFormik } from 'formik'
 import { validationSchema } from '@/ui/Input/validationSchema'
-import { Button } from '@/components/ui/button'
 import ComboboxBasic from '@/ui/Combobox'
 import { useCatalog } from '@/hooks/useCatalog'
 import AddProductModal from './AddProductModal'
@@ -79,9 +78,13 @@ export default function AddNewProduct() {
                     options={catalog.map(item => item.name)}
                     inputValue={searchText}
                     emptyContent={
-                        <Button type="button" onClick={() => isShowModal(true)}>
-                            + Add "{searchText}"
-                        </Button>
+                        <BaseButton
+                            className="bg-green text-light-green"
+                            type="button"
+                            onClick={() => isShowModal(true)}
+                        >
+                            Add "{searchText}"
+                        </BaseButton>
                     }
                 />
                 <InputField

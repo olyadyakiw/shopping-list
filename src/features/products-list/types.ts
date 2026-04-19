@@ -4,6 +4,7 @@ export type Product = {
     isChecked: boolean
     units: string
     category: string
+    color?: string
     id?: number
 }
 

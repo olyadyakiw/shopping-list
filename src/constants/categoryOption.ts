@@ -2,13 +2,14 @@ import type { Product } from '../features/products-list/types'
 import type { Option } from '../ui/Select'
 
 export const categoryOptions: Option<Product['category']>[] = [
-    { val: 'Dairy', name: 'Dairy' },
-    { val: 'Pantry', name: 'Pantry' },
-    { val: 'Meat & Fish', name: 'Meat & Fish' },
-    { val: 'Fruits & Vegetables', name: 'Fruits & Vegetables' },
-    { val: 'Bakery', name: 'Bakery' },
-    { val: 'Frozen', name: 'Frozen' },
-    { val: 'Snacks', name: 'Snacks' },
-    { val: 'Household', name: 'Household' },
-    { val: 'Personal Care', name: 'Personal Care' },
+    { val: 'Dairy', name: 'Dairy', color: 'blue' },
+    { val: 'Pantry', name: 'Pantry', color: 'red' },
+    { val: 'Meat & Fish', name: 'Meat & Fish', color: 'purple' },
+    { val: 'Fruits & Vegetables', name: 'Fruits & Vegetables', color: 'green' },
+    { val: 'Bakery', name: 'Bakery', color: 'orange' },
+    { val: 'Frozen', name: 'Frozen', color: 'purple' },
+    { val: 'Snacks', name: 'Snacks', color: 'pink' },
+    { val: 'Beverages', name: 'beverages', color: 'blue' },
+    { val: 'Household', name: 'Household', color: 'orange' },
+    { val: 'Personal Care', name: 'Personal Care', color: 'red' },
 ]

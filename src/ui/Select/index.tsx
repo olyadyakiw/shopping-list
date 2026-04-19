@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 export type Option<T> = {
     val: T
     name: string
+    color?: string
 }
 
 type SelectProps<T extends string> = {

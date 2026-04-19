@@ -68,7 +68,7 @@ export default function AddProductModal({ defaultName, open, onClose }: Props) {
                         placeholder="Add product..."
                         type="string"
                         {...formik.getFieldProps('name')}
-                        error={formik.touched.count ? formik.errors.count : undefined}
+                        error={formik.touched.count ? formik.errors.name : undefined}
                     />
                     <InputField
                         fieldName="Count"

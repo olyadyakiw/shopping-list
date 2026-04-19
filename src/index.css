@@ -153,3 +153,6 @@ body,
         @apply font-sans;
     }
 }
+
+@source inline("bg-{blue,red,purple,green,orange,pink} text-{blue,red,purple,green,orange,pink} border-{blue,red,purple,green,orange,pink}");
+@source inline("data-[state=checked]:bg-{blue,red,purple,green,orange,pink} data-[state=checked]:border-{blue,red,purple,green,orange,pink}");
