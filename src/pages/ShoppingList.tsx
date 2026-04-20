@@ -1,5 +1,6 @@
 import AddNewProduct from '@/features/products-list/components/AddNewProduct'
 import ProductsList from '../features/products-list/ProductsList'
+import ManageProducts from '@/features/products-list/components/ManageProducts'
 
 export default function ShoppingList() {
     return (
@@ -7,7 +8,7 @@ export default function ShoppingList() {
             <section>
                 <div className="grid gap-x-15 gap-y-8 lg:grid-cols-3">
                     <div className="lg:col-start-1 lg:row-start-1">
-                        <AddNewProduct />
+                        <ManageProducts />
                     </div>
                     <div className="lg:col-span-2 lg:row-span-3">
                         <ProductsList />

@@ -4,7 +4,11 @@ import { deleteProduct as deleteProductFn } from '../../../services/apiProducts'
 export function useDeleteProduct() {
     const queryClient = useQueryClient()
 
-    const { mutate: deleteProduct, isPending: isCreating } = useMutation({
+    const {
+        mutate: deleteProduct,
+        mutateAsync: deleteProductAsync,
+        isPending: isCreating,
+    } = useMutation({
         mutationFn: deleteProductFn,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -12,5 +16,5 @@ export function useDeleteProduct() {
         onError: err => console.error(err.message),
     })
 
-    return { isCreating, deleteProduct }
+    return { isCreating, deleteProduct, deleteProductAsync }
 }
