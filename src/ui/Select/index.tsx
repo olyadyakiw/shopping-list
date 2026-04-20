@@ -16,7 +16,7 @@ type SelectProps<T extends string> = {
 export default function SelectField<T extends string>({ label, value, onChange, options }: SelectProps<T>) {
     return (
         <label className="flex flex-col gap-1 mb-2">
-            <span className="text-sm">{label}:</span>
+            <span className="text-base">{label}:</span>
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger className="w-full bg-white">
                     <SelectValue placeholder={`Select ${label}`} />

@@ -9,7 +9,7 @@ export default function ShoppingList() {
                     <div className="lg:col-start-1 lg:row-start-1">
                         <AddNewProduct />
                     </div>
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 lg:row-span-3">
                         <ProductsList />
                     </div>
                     <div className="lg:col-start-1 lg:row-start-2">

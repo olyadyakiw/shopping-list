@@ -6,8 +6,16 @@ import ClipboardIcon from '@/components/icons/ClipboardIcon'
 
 const links = [
     { name: 'Shopping List', to: 'shopping-list', icon: <ChecklistIcon width="20" height="20" fill="currentColor" /> },
-    { name: 'Recipes', to: 'recipes', icon: <DocTextIcon width="20" height="20" fill="currentColor" /> },
-    { name: 'Templates', to: 'templates', icon: <ClipboardIcon width="20" height="20" fill="currentColor" /> },
+    {
+        name: 'Recipes',
+        to: 'recipes',
+        icon: <DocTextIcon width="20" height="20" fill="currentColor" />,
+    },
+    {
+        name: 'Templates',
+        to: 'templates',
+        icon: <ClipboardIcon className="inline-block -ms-0.5 -me-0.5" width="24" height="24" fill="currentColor" />,
+    },
 ]
 
 export default function MainNav() {

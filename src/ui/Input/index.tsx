@@ -9,7 +9,7 @@ type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export function InputField({ fieldName, error, ...rest }: InputFieldProps) {
     return (
         <Field className="gap-2 mb-2">
-            <FieldLabel className="text-base font-semibold" htmlFor={`input-field-${fieldName}`}>
+            <FieldLabel className="text-base font-normal" htmlFor={`input-field-${fieldName}`}>
                 {fieldName}
             </FieldLabel>
             <Input className="bg-white" {...rest} id={`input-field-${fieldName}`} />

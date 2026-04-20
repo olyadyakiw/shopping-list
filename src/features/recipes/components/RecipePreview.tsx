@@ -44,7 +44,6 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                     fieldName="Count"
                     placeholder=""
                     type="number"
-                    min={1}
                     {...formik.getFieldProps('count')}
                     error={formik.touched.count ? formik.errors.count : undefined}
                 />
