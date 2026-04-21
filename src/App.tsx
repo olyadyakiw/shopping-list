@@ -8,6 +8,7 @@ import PageNotFound from './pages/PageNotFound'
 import Login from './pages/Login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from './components/ui/sonner'
+import ProtectedRoute from './ui/ProtectedRoute'
 
 function App() {
     const queryClient = new QueryClient()
@@ -16,7 +17,13 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <Routes>
-                    <Route element={<AppLayout />}>
+                    <Route
+                        element={
+                            <ProtectedRoute>
+                                <AppLayout />
+                            </ProtectedRoute>
+                        }
+                    >
                         <Route index element={<Navigate replace to="shopping-list" />} />
                         <Route path="shopping-list" element={<ShoppingList />} />
                         <Route path="recipes" element={<Recipes />} />
