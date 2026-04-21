@@ -4,7 +4,6 @@ import BaseButton from '@/ui/BaseButton'
 import TrashCanOutlineIcon from '@/components/icons/TrashCanOutlineIcon'
 import { useProducts } from '../hooks/useProducts'
 import { useDeleteProduct } from '../hooks/useDeleteProduct'
-import { Loading01Icon } from '@hugeicons/core-free-icons'
 
 type Props = {
     open: boolean
