@@ -22,7 +22,7 @@ export default function ConfirmDeleteProductsModal({ open, onClose }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-90 sm:px-7.5 sm:py-10 bg-light-grey gap-4" showCloseButton={false}>
+            <DialogContent className="sm:max-w-90 sm:px-7.5 sm:py-6 bg-light-grey gap-4" showCloseButton={false}>
                 <DialogHeader>
                     <div className="flex items-center gap-1">
                         <TrashCanOutlineIcon fill="var(--color-red)" width="36" height="36" />

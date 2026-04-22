@@ -49,7 +49,7 @@ export default function EditProductModal({ product, open, onClose }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-90 sm:px-7.5 sm:py-10 bg-light-grey" showCloseButton={false}>
+            <DialogContent className="sm:max-w-90 sm:px-7.5 sm:py-6 bg-light-grey" showCloseButton={false}>
                 <DialogHeader>
                     <div className="flex items-center gap-1">
                         <FileEditsOutlineIcon width="36" height="36" />
