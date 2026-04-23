@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog-base-ui'
 import type { Recipe } from '../types'
 import Ingredient from './Ingredient'
 import { useAddRecipeToList } from '../hooks/useAddRecipeToList'
