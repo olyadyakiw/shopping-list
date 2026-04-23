@@ -14,6 +14,10 @@ import ClipboardIcon from '@/components/icons/ClipboardIcon'
 import TrashCanOutlineIcon from '@/components/icons/TrashCanOutlineIcon'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CiSquarePlus } from 'react-icons/ci'
+import { useEditRecipe } from '../hooks/useEditRecipe'
+import EditableIngredient from './EditableIngredient'
+import { InputField } from '@/ui/Input'
+import { useUpdateRecipe } from '../hooks/useUpdateRecipe'
 
 type Props = {
     recipe: Recipe | null
@@ -24,6 +28,18 @@ type Props = {
 export default function RecipePreview({ recipe, open, onClose }: Props) {
     const { addRecipeToList } = useAddRecipeToList()
     const [servings, setServings] = useState(2)
+    const {
+        isEditing,
+        setEditedTitle,
+        editedTitle,
+        editedIngredients,
+        startEditing,
+        cancel,
+        updateIngredient,
+        removeIngredients,
+        addIngredient,
+    } = useEditRecipe(recipe!)
+    const { updateRecipe } = useUpdateRecipe()
 
     function handleAddButton() {
         addRecipeToList(recipe!, servings)
@@ -31,12 +47,37 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
         toast.success('Recepy has been added')
     }
 
+    function handleSaveButton() {
+        updateRecipe(
+            {
+                id: recipe!.id,
+                title: editedTitle,
+                ingredients: editedIngredients,
+            },
+            {
+                onSuccess: () => {
+                    console.log('mutation success')
+                    cancel()
+                },
+            },
+        )
+    }
+
+    const ingredients = isEditing ? editedIngredients : recipe?.ingredients
+
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-175 sm:px-7.5 sm:py-6 bg-light-grey gap-4" showCloseButton={false}>
+            <DialogContent
+                className="flex flex-col sm:max-w-175 max-h-134 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
+                showCloseButton={false}
+            >
                 <DialogHeader>
                     <div className="flex justify-between items-center">
-                        <DialogTitle className="text-2xl font-semibold">{recipe?.title}</DialogTitle>
+                        {isEditing ? (
+                            <InputField value={editedTitle} onChange={e => setEditedTitle(e.target.value)} />
+                        ) : (
+                            <DialogTitle className="text-2xl font-semibold">{recipe?.title}</DialogTitle>
+                        )}
                         <div className="flex items-center gap-8">
                             <ButtonGroup className="flex items-center gap-2">
                                 <BaseButton
@@ -68,7 +109,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                     <BsThreeDotsVertical />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent side="bottom" align="end">
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={startEditing}>
                                         <FileEditsOutlineIcon width="16" height="16" fill={'var(--color-black)'} /> Edit
                                         recepy
                                     </DropdownMenuItem>
@@ -88,36 +129,78 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                 <Tabs defaultValue="ingridients" className="w-full">
                     <TabsList>
                         <TabsTrigger value="ingridients">Ingridients</TabsTrigger>
-                        <TabsTrigger value="directions">Directions</TabsTrigger>
+                        <TabsTrigger disabled={isEditing} value="directions">
+                            Directions
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="ingridients">
-                        <ul className="flex flex-wrap gap-x-8">
-                            {recipe?.ingredients.map(ingredient => {
-                                const ingrCount = (ingredient.count * +servings).toFixed(2)
-                                return <Ingredient key={ingredient.id} {...ingredient} count={+ingrCount} />
-                            })}
-                        </ul>
+                        <div className="h-82.5 py-6 px-7.5 bg-white rounded-[20px] overflow-y-scroll">
+                            <ul className="flex flex-wrap gap-x-8">
+                                {ingredients?.map(ingredient => {
+                                    const ingrCount = (ingredient.count * +servings).toFixed(2)
+                                    if (isEditing)
+                                        return (
+                                            <EditableIngredient
+                                                key={ingredient.id}
+                                                ingredient={ingredient}
+                                                onUpdateIngredient={updateIngredient}
+                                                onDeleteIngredient={removeIngredients}
+                                            />
+                                        )
+
+                                    return <Ingredient key={ingredient.id} {...ingredient} count={+ingrCount} />
+                                })}
+                            </ul>
+                            {isEditing && (
+                                <BaseButton
+                                    onClick={addIngredient}
+                                    className="bg-green hover:bg-green/80 text-light-green w-full"
+                                >
+                                    <CiSquarePlus className="size-6 text-light-green" />+ Add Ingredient
+                                </BaseButton>
+                            )}
+                        </div>
                     </TabsContent>
                     <TabsContent value="directions">Directions</TabsContent>
                 </Tabs>
-                <div className="flex gap-2 justify-between mt-4">
-                    <BaseButton
-                        onClick={handleAddButton}
-                        className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
-                    >
-                        <CiSquarePlus className="size-6 text-light-green" />
-                        Add To Shopping List
-                    </BaseButton>
-                    <BaseButton
-                        onClick={e => {
-                            e.preventDefault()
-                            onClose()
-                        }}
-                        className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full"
-                        type="button"
-                    >
-                        Cancel
-                    </BaseButton>
+                <div className="flex gap-2 justify-between mt-auto">
+                    {isEditing ? (
+                        <>
+                            <BaseButton
+                                onClick={handleSaveButton}
+                                className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
+                            >
+                                Save changes
+                            </BaseButton>
+                            <BaseButton
+                                onClick={cancel}
+                                className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full"
+                                type="button"
+                            >
+                                Cancel Edits
+                            </BaseButton>
+                        </>
+                    ) : (
+                        <>
+                            <BaseButton
+                                onClick={handleAddButton}
+                                className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
+                            >
+                                <CiSquarePlus className="size-6 text-light-green" />
+                                Add To Shopping List
+                            </BaseButton>
+                            <BaseButton
+                                onClick={e => {
+                                    e.preventDefault()
+                                    onClose()
+                                }}
+                                className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full"
+                                type="button"
+                            >
+                                Cancel
+                            </BaseButton>
+                        </>
+                    )}
                 </div>
             </DialogContent>
         </Dialog>

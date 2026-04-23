@@ -2,16 +2,18 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 
 type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
-    fieldName: string
+    fieldName?: string
     error?: string
 }
 
 export function InputField({ fieldName, error, ...rest }: InputFieldProps) {
     return (
         <Field className="gap-2 mb-2">
-            <FieldLabel className="text-base font-normal" htmlFor={`input-field-${fieldName}`}>
-                {fieldName}
-            </FieldLabel>
+            {fieldName && (
+                <FieldLabel className="text-base font-normal" htmlFor={`input-field-${fieldName}`}>
+                    {fieldName}
+                </FieldLabel>
+            )}
             <Input className="bg-white" {...rest} id={`input-field-${fieldName}`} />
             <FieldError>{error && <span>{error}</span>}</FieldError>
         </Field>
