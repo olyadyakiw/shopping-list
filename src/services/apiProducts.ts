@@ -7,7 +7,6 @@ export async function getProducts() {
         .select('*')
         .order('isChecked', { ascending: true })
         .order('created_at', { ascending: true })
-    console.log(data)
 
     if (error) {
         console.error(error)

@@ -56,7 +56,6 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
             },
             {
                 onSuccess: () => {
-                    console.log('mutation success')
                     cancel()
                 },
             },
@@ -74,7 +73,12 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                 <DialogHeader>
                     <div className="flex justify-between items-center">
                         {isEditing ? (
-                            <InputField value={editedTitle} onChange={e => setEditedTitle(e.target.value)} />
+                            <InputField
+                                className="mb-0 max-w-75"
+                                value={editedTitle}
+                                onChange={e => setEditedTitle(e.target.value)}
+                                inputClassName="md:text-2xl text-black"
+                            />
                         ) : (
                             <DialogTitle className="text-2xl font-semibold">{recipe?.title}</DialogTitle>
                         )}
@@ -88,6 +92,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                             return 0
                                         })
                                     }
+                                    disabled={isEditing}
                                 >
                                     <FiMinus />
                                 </BaseButton>
@@ -97,14 +102,16 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                 <BaseButton
                                     className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-grey p-0"
                                     onClick={() => setServings(s => s + 1)}
+                                    disabled={isEditing}
                                 >
                                     <FiPlus />
                                 </BaseButton>
                             </ButtonGroup>
                             <DropdownMenu>
                                 <DropdownMenuTrigger
-                                    className="cursor-pointer size-8 hover:bg-medium-grey rounded-full p-1.5"
+                                    className={`size-8 hover:bg-medium-grey rounded-full p-1.5 ${isEditing ? 'opacity-50 cursor-auto bg-medium-grey' : 'opacity-100 cursor-pointer bg-transparent'}`}
                                     asChild
+                                    disabled={isEditing}
                                 >
                                     <BsThreeDotsVertical />
                                 </DropdownMenuTrigger>
@@ -134,8 +141,8 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="ingridients">
-                        <div className="h-82.5 py-6 px-7.5 bg-white rounded-[20px] overflow-y-scroll">
-                            <ul className="flex flex-wrap gap-x-8">
+                        <div className="h-82.5 p-6 bg-white rounded-[20px] overflow-y-scroll">
+                            <ul className="flex flex-wrap gap-4 mb-4">
                                 {ingredients?.map(ingredient => {
                                     const ingrCount = (ingredient.count * +servings).toFixed(2)
                                     if (isEditing)
@@ -145,6 +152,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                                 ingredient={ingredient}
                                                 onUpdateIngredient={updateIngredient}
                                                 onDeleteIngredient={removeIngredients}
+                                                ingredients={ingredients}
                                             />
                                         )
 
@@ -156,7 +164,8 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                     onClick={addIngredient}
                                     className="bg-green hover:bg-green/80 text-light-green w-full"
                                 >
-                                    <CiSquarePlus className="size-6 text-light-green" />+ Add Ingredient
+                                    <CiSquarePlus className="size-6 text-light-green" />
+                                    Add Ingredient
                                 </BaseButton>
                             )}
                         </div>

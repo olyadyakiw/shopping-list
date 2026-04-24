@@ -6,7 +6,6 @@ export async function getRecipes() {
         .from('recipes')
         .select('*, ingredients(id, count, catalog_id, catalog(name, units, category))')
         .order('created_at', { ascending: true })
-    console.log(data)
 
     if (error) {
         console.error(error)
@@ -38,7 +37,6 @@ export async function updateRecipe({
         count: i.count,
     }))
 
-    console.log('saving ingredients:', newIngredients)
     const { error: insertError } = await supabase.from('ingredients').insert(newIngredients)
 
     if (insertError) throw new Error('New ingredients could not be saved')

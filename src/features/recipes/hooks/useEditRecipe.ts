@@ -36,7 +36,6 @@ export function useEditRecipe(recipe: Recipe) {
     }
 
     const updateIngredient = (id: number, changes: Partial<Ingredient>) => {
-        console.log('updating', id, changes, editedIngredients)
         const ingredient = editedIngredients.map(item => {
             if (item.id === id) {
                 return { ...item, ...changes }

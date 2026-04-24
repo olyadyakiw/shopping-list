@@ -1,4 +1,4 @@
 export const unitsOption = [
     { val: 'kg', name: 'Kilogram' },
-    { val: 'pieces', name: 'Pieces' },
+    { val: 'pcs', name: 'Pieces' },
 ]

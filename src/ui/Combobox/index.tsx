@@ -10,13 +10,13 @@ import {
 } from '@/components/ui/combobox'
 
 type ComboboxProps<T extends string> = {
-    label: string
     value: T
     onChange: (value: T) => void
     options: string[]
     inputValue?: string
     emptyContent?: React.ReactNode
     onSearchChange?: (value: string) => void
+    label?: string
 }
 
 export default function ComboboxBasic<T extends string>({
@@ -29,8 +29,8 @@ export default function ComboboxBasic<T extends string>({
     inputValue,
 }: ComboboxProps<T>) {
     return (
-        <label className="flex flex-col gap-2 mb-2">
-            <span className="text-base font-semibold">{label}:</span>
+        <label className="flex flex-col gap-2">
+            {label && <span className="text-base font-semibold">{label}:</span>}
             <Combobox
                 inputValue={inputValue}
                 onInputValueChange={onSearchChange}
