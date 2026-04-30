@@ -7,7 +7,23 @@ export function useUpdateProduct() {
 
     const { mutate: updateProduct, isPending } = useMutation({
         mutationFn: ({ id, updates }: { id: number; updates: Partial<Product> }) => updateProductFn(id, updates),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] }),
+        onMutate: ({ id, updates }) => {
+            const previousProducts = queryClient.getQueryData(['products'])
+            queryClient.setQueryData(['products'], (old: Product[]) =>
+                old.map(product => {
+                    if (product.id === id) {
+                        return { ...product, ...updates }
+                    } else {
+                        return product
+                    }
+                }),
+            )
+            return { previousProducts }
+        },
+        onError: (_err, _variables, context) => {
+            queryClient.setQueryData(['products'], context?.previousProducts)
+        },
+        onSettled: () => queryClient.invalidateQueries({ queryKey: ['products'] }),
     })
 
     return { updateProduct, isPending }

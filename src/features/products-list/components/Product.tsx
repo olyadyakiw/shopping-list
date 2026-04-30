@@ -9,7 +9,7 @@ import EditProductModal from './EditProductModal'
 import { useState } from 'react'
 
 export default function Product(product: Product) {
-    const { updateProduct, isPending } = useUpdateProduct()
+    const { updateProduct } = useUpdateProduct()
     const { deleteProduct, isCreating } = useDeleteProduct()
     const { id, name, count, units, isChecked, color } = product
     const [showModal, isShowModal] = useState(false)
@@ -20,7 +20,6 @@ export default function Product(product: Product) {
                     <div className="flex gap-2 items-center capitalize py-2">
                         <CheckboxBase
                             className={`data-[state=checked]:bg-${color} data-[state=checked]:border-${color}`}
-                            disabled={isPending}
                             onCheckedChange={() => id && updateProduct({ id, updates: { isChecked: !isChecked } })}
                             checked={isChecked}
                         />
