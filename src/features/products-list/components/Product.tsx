@@ -17,13 +17,13 @@ export default function Product(product: Product) {
         <>
             <li>
                 <label className="flex justify-between items-center gap-2">
-                    <div className="flex gap-2 items-center capitalize py-2">
+                    <div className="flex gap-2 items-center py-2">
                         <CheckboxBase
                             className={`data-[state=checked]:bg-${color} data-[state=checked]:border-${color}`}
                             onCheckedChange={() => id && updateProduct({ id, updates: { isChecked: !isChecked } })}
                             checked={isChecked}
                         />
-                        {name}
+                        {name[0].toUpperCase() + name.slice(1).toLowerCase()}
                     </div>
                     <div className="flex gap-2 items-center">
                         {count} {units}

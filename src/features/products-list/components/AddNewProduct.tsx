@@ -79,7 +79,7 @@ export default function AddNewProduct() {
                     inputValue={searchText}
                     emptyContent={
                         <BaseButton
-                            className="bg-green text-light-green"
+                            className="bg-green hover:bg-green/80 text-light-green"
                             type="button"
                             onClick={() => isShowModal(true)}
                         >

@@ -44,7 +44,7 @@ export default function ComboboxBasic<T extends string>({
                     <ComboboxList>
                         {(option: string) => (
                             <ComboboxItem key={option} value={option}>
-                                {option}
+                                {option.toLowerCase()}
                             </ComboboxItem>
                         )}
                     </ComboboxList>
