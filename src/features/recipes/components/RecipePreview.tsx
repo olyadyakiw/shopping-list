@@ -19,6 +19,12 @@ import EditableIngredient from './EditableIngredient'
 import { InputField } from '@/ui/Input'
 import { useUpdateRecipe } from '../hooks/useUpdateRecipe'
 
+import { LexicalComposer } from '@lexical/react/LexicalComposer'
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { ContentEditable } from '@lexical/react/LexicalContentEditable'
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
+
 type Props = {
     recipe: Recipe | null
     open: boolean
@@ -63,6 +69,12 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     }
 
     const ingredients = isEditing ? editedIngredients : recipe?.ingredients
+
+    const initialConfig = {
+        namespace: 'MyEditor',
+        onError: () => console.log('error'),
+        editorState: recipe?.direction,
+    }
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -170,7 +182,15 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                             )}
                         </div>
                     </TabsContent>
-                    <TabsContent value="directions">Directions</TabsContent>
+                    <TabsContent value="directions">
+                        <LexicalComposer initialConfig={initialConfig}>
+                            <PlainTextPlugin
+                                contentEditable={<ContentEditable />}
+                                ErrorBoundary={LexicalErrorBoundary}
+                            />
+                            <HistoryPlugin />
+                        </LexicalComposer>
+                    </TabsContent>
                 </Tabs>
                 <div className="flex gap-2 justify-between mt-auto">
                     {isEditing ? (

@@ -2,6 +2,7 @@ export type Recipe = {
     id: number
     title: string
     ingredients: Ingredient[]
+    direction: string
 }
 
 export type Ingredient = {
