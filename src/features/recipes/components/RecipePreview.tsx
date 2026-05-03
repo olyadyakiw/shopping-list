@@ -7,11 +7,6 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import BaseButton from '@/ui/BaseButton'
 import { useState } from 'react'
 import { FiPlus, FiMinus } from 'react-icons/fi'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import FileEditsOutlineIcon from '@/components/icons/FileEditsOutlineIcon'
-import ClipboardIcon from '@/components/icons/ClipboardIcon'
-import TrashCanOutlineIcon from '@/components/icons/TrashCanOutlineIcon'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CiSquarePlus } from 'react-icons/ci'
 import { useEditRecipe } from '../hooks/useEditRecipe'
@@ -24,6 +19,7 @@ import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
+import RecipeDropdown from './RecipeDropdown'
 
 type Props = {
     recipe: Recipe | null
@@ -36,10 +32,10 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     const [servings, setServings] = useState(2)
     const {
         isEditing,
+        startEditing,
         setEditedTitle,
         editedTitle,
         editedIngredients,
-        startEditing,
         cancel,
         updateIngredient,
         removeIngredients,
@@ -119,29 +115,8 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                     <FiPlus />
                                 </BaseButton>
                             </ButtonGroup>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger
-                                    className={`size-8 hover:bg-medium-grey rounded-full p-1.5 ${isEditing ? 'opacity-50 cursor-auto bg-medium-grey' : 'opacity-100 cursor-pointer bg-transparent'}`}
-                                    asChild
-                                    disabled={isEditing}
-                                >
-                                    <BsThreeDotsVertical />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent side="bottom" align="end">
-                                    <DropdownMenuItem onClick={startEditing}>
-                                        <FileEditsOutlineIcon width="16" height="16" fill={'var(--color-black)'} /> Edit
-                                        recepy
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <ClipboardIcon width="16" height="16" fill={'var(--color-black)'} /> Duplicate
-                                        recepy
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="text-red">
-                                        <TrashCanOutlineIcon width="16" height="16" fill={'var(--color-red)'} /> Delete
-                                        recepy
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+
+                            <RecipeDropdown recipe={recipe} startEditing={startEditing} isEditing={isEditing} />
                         </div>
                     </div>
                 </DialogHeader>
