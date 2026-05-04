@@ -3,10 +3,8 @@ import type { Recipe } from '../types'
 import Ingredient from './Ingredient'
 import { useAddRecipeToList } from '../hooks/useAddRecipeToList'
 import { toast } from 'sonner'
-import { ButtonGroup } from '@/components/ui/button-group'
 import BaseButton from '@/ui/BaseButton'
 import { useState } from 'react'
-import { FiPlus, FiMinus } from 'react-icons/fi'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CiSquarePlus } from 'react-icons/ci'
 import { useEditRecipe } from '../hooks/useEditRecipe'
@@ -20,6 +18,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import RecipeDropdown from './RecipeDropdown'
+import ServingsSelector from './ServingsSelector'
 
 type Props = {
     recipe: Recipe | null
@@ -91,30 +90,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                             <DialogTitle className="text-2xl font-semibold">{recipe?.title}</DialogTitle>
                         )}
                         <div className="flex items-center gap-8">
-                            <ButtonGroup className="flex items-center gap-2">
-                                <BaseButton
-                                    className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-gre p-0"
-                                    onClick={() =>
-                                        setServings(s => {
-                                            if (s > 0) return s - 1
-                                            return 0
-                                        })
-                                    }
-                                    disabled={isEditing}
-                                >
-                                    <FiMinus />
-                                </BaseButton>
-                                <span className="text-center text-sm flex flex-col">
-                                    <span className="text-lg leading-[0.75]">{servings}</span> servings
-                                </span>
-                                <BaseButton
-                                    className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-grey p-0"
-                                    onClick={() => setServings(s => s + 1)}
-                                    disabled={isEditing}
-                                >
-                                    <FiPlus />
-                                </BaseButton>
-                            </ButtonGroup>
+                            <ServingsSelector servings={servings} onServings={setServings} isEditing={isEditing} />
 
                             <RecipeDropdown recipe={recipe} startEditing={startEditing} isEditing={isEditing} />
                         </div>
