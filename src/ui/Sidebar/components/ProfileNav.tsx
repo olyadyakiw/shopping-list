@@ -17,8 +17,12 @@ export default function ProfileNav() {
                 </div>
                 <div className="text-lg">{name}</div>
             </div>
-            <div>
-                <BaseButton disabled={isPending} onClick={() => logout()}>
+            <div className="flex justify-center">
+                <BaseButton
+                    className="bg-green hover:bg-green/80 text-light-green"
+                    disabled={isPending}
+                    onClick={() => logout()}
+                >
                     Log out
                 </BaseButton>
             </div>
