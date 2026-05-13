@@ -17,7 +17,7 @@ export default function ProfileNav() {
                 </div>
                 <div className="text-lg">{name}</div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex mt-2 px-4">
                 <BaseButton
                     className="bg-green hover:bg-green/80 text-light-green"
                     disabled={isPending}
