@@ -15,7 +15,7 @@ function RecipeItem({ recipe, onPreview, count }: Props) {
 
     function handleAddButton() {
         addRecipeToList(recipe, count)
-        toast.success('Recepy has been added')
+        toast.success('Recipe has been added')
     }
     return (
         <Card>

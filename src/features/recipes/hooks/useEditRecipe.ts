@@ -28,7 +28,7 @@ export function useEditRecipe(recipe: Recipe) {
         const ingredient = {
             id: Math.random(),
             count: 0,
-            recepy_id: recipe.id,
+            recipe_id: recipe.id,
             catalog_id: 0,
             catalog: { name: '', units: '', category: '' },
         }

@@ -23,13 +23,13 @@ export default function RecipeDropdown({ isEditing, startEditing }: Props) {
             </DropdownMenuTrigger>
             <DropdownMenuContent side="bottom" align="end">
                 <DropdownMenuItem onClick={startEditing}>
-                    <FileEditsOutlineIcon width="16" height="16" fill={'var(--color-black)'} /> Edit recepy
+                    <FileEditsOutlineIcon width="16" height="16" fill={'var(--color-black)'} /> Edit recipe
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    <ClipboardIcon width="16" height="16" fill={'var(--color-black)'} /> Duplicate recepy
+                    <ClipboardIcon width="16" height="16" fill={'var(--color-black)'} /> Duplicate recipe
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-red">
-                    <TrashCanOutlineIcon width="16" height="16" fill={'var(--color-red)'} /> Delete recepy
+                    <TrashCanOutlineIcon width="16" height="16" fill={'var(--color-red)'} /> Delete recipe
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

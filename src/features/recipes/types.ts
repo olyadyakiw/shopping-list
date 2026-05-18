@@ -8,7 +8,7 @@ export type Recipe = {
 export type Ingredient = {
     id: number
     count: number
-    recepy_id: number
+    recipe_id: number
     catalog_id: number
     catalog: Catalog
 }

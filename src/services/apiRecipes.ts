@@ -27,12 +27,12 @@ export async function updateRecipe({
 
     if (titleError) throw new Error('Recipe title could not be updated')
 
-    const { error: deleteError } = await supabase.from('ingredients').delete().eq('recepy_id', id)
+    const { error: deleteError } = await supabase.from('ingredients').delete().eq('recipe_id', id)
 
     if (deleteError) throw new Error('Old ingredients could not be deleted')
 
     const newIngredients = ingredients.map(i => ({
-        recepy_id: id,
+        recipe_id: id,
         catalog_id: i.catalog_id,
         count: i.count,
     }))

@@ -45,7 +45,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     function handleAddButton() {
         addRecipeToList(recipe!, servings)
         onClose()
-        toast.success('Recepy has been added')
+        toast.success('Recipe has been added')
     }
 
     function handleSaveButton() {
