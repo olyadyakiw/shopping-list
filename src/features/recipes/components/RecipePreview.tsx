@@ -17,6 +17,7 @@ import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import RecipeDropdown from './RecipeDropdown'
 import ServingsSelector from './ServingsSelector'
 
@@ -34,6 +35,8 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
         startEditing,
         setEditedTitle,
         editedTitle,
+        setEditedDescription,
+        editedDescription,
         editedIngredients,
         cancel,
         updateIngredient,
@@ -53,6 +56,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
             {
                 id: recipe!.id,
                 title: editedTitle,
+                description: editedDescription,
                 ingredients: editedIngredients,
             },
             {
@@ -68,7 +72,8 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     const initialConfig = {
         namespace: 'MyEditor',
         onError: () => console.log('error'),
-        editorState: recipe?.direction,
+        editorState: recipe?.description ?? undefined,
+        editable: isEditing,
     }
 
     return (
@@ -96,12 +101,10 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                         </div>
                     </div>
                 </DialogHeader>
-                <Tabs defaultValue="ingridients" className="w-full">
+                <Tabs defaultValue="ingridients" className="w-full gap-4">
                     <TabsList>
                         <TabsTrigger value="ingridients">Ingridients</TabsTrigger>
-                        <TabsTrigger disabled={isEditing} value="directions">
-                            Directions
-                        </TabsTrigger>
+                        <TabsTrigger value="directions">Directions</TabsTrigger>
                     </TabsList>
                     <TabsContent value="ingridients">
                         <div className="h-82.5 p-6 bg-white rounded-[20px] overflow-y-scroll">
@@ -134,12 +137,21 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                         </div>
                     </TabsContent>
                     <TabsContent value="directions">
-                        <LexicalComposer initialConfig={initialConfig}>
+                        <LexicalComposer key={`${recipe?.id}-${isEditing}`} initialConfig={initialConfig}>
                             <PlainTextPlugin
-                                contentEditable={<ContentEditable />}
+                                contentEditable={
+                                    <div className="h-82.5 p-6 bg-white rounded-[20px] overflow-y-scroll">
+                                        <ContentEditable />
+                                    </div>
+                                }
                                 ErrorBoundary={LexicalErrorBoundary}
                             />
                             <HistoryPlugin />
+                            <OnChangePlugin
+                                onChange={editorState => {
+                                    setEditedDescription(JSON.stringify(editorState.toJSON()))
+                                }}
+                            />
                         </LexicalComposer>
                     </TabsContent>
                 </Tabs>

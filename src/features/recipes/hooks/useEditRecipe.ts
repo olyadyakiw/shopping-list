@@ -5,11 +5,13 @@ import type { Ingredient } from '../types'
 export function useEditRecipe(recipe: Recipe) {
     const [isEditing, setIsEditing] = useState(false)
     const [editedTitle, setEditedTitle] = useState('')
+    const [editedDescription, setEditedDescription] = useState('')
     const [editedIngredients, setEditedIngredients] = useState<Ingredient[]>([])
 
     const startEditing = () => {
         setIsEditing(true)
         setEditedTitle(recipe.title)
+        setEditedDescription(recipe.description)
         const copyIngredients = structuredClone(recipe.ingredients)
         setEditedIngredients(copyIngredients)
     }
@@ -18,6 +20,7 @@ export function useEditRecipe(recipe: Recipe) {
         setIsEditing(false)
         setEditedIngredients([])
         setEditedTitle('')
+        setEditedDescription('')
     }
 
     const removeIngredients = (id: number) => {
@@ -49,6 +52,8 @@ export function useEditRecipe(recipe: Recipe) {
         isEditing,
         setEditedTitle,
         editedTitle,
+        editedDescription,
+        setEditedDescription,
         editedIngredients,
         startEditing,
         cancel,

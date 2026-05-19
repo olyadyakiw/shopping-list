@@ -17,15 +17,19 @@ export async function getRecipes() {
 export async function updateRecipe({
     id,
     title,
+    description,
     ingredients,
 }: {
     id: number
     title: string
+    description: string
     ingredients: Ingredient[]
 }) {
     const { error: titleError } = await supabase.from('recipes').update({ title }).eq('id', id)
+    const { error: descriptionError } = await supabase.from('recipes').update({ description }).eq('id', id)
 
     if (titleError) throw new Error('Recipe title could not be updated')
+    if (descriptionError) throw new Error('Recipe description could not be updated')
 
     const { error: deleteError } = await supabase.from('ingredients').delete().eq('recipe_id', id)
 
