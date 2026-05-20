@@ -2,18 +2,18 @@ import { useState } from 'react'
 import type { Recipe } from '../types'
 import type { Ingredient } from '../types'
 
-export function useEditRecipe(recipe: Recipe) {
+export function useEditRecipe(recipe: Recipe | null) {
     const [isEditing, setIsEditing] = useState(false)
     const [editedTitle, setEditedTitle] = useState('')
     const [editedDescription, setEditedDescription] = useState('')
     const [editedIngredients, setEditedIngredients] = useState<Ingredient[]>([])
 
     const startEditing = () => {
+        if (!recipe) return
         setIsEditing(true)
         setEditedTitle(recipe.title)
         setEditedDescription(recipe.description)
-        const copyIngredients = structuredClone(recipe.ingredients)
-        setEditedIngredients(copyIngredients)
+        setEditedIngredients(structuredClone(recipe.ingredients))
     }
 
     const cancel = () => {
@@ -31,7 +31,7 @@ export function useEditRecipe(recipe: Recipe) {
         const ingredient = {
             id: Math.random(),
             count: 0,
-            recipe_id: recipe.id,
+            recipe_id: recipe?.id ?? 0,
             catalog_id: 0,
             catalog: { name: '', units: '', category: '' },
         }

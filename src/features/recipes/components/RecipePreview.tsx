@@ -72,14 +72,14 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     const initialConfig = {
         namespace: 'MyEditor',
         onError: () => console.log('error'),
-        editorState: recipe?.description ?? undefined,
+        editorState: recipe?.description ? recipe.description : undefined,
         editable: isEditing,
     }
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent
-                className="flex flex-col sm:max-w-175 max-h-134 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
+                className="flex flex-col sm:max-w-175 max-h-140 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
                 showCloseButton={false}
             >
                 <DialogHeader>

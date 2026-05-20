@@ -4,6 +4,8 @@ import FileEditsOutlineIcon from '@/components/icons/FileEditsOutlineIcon'
 import ClipboardIcon from '@/components/icons/ClipboardIcon'
 import TrashCanOutlineIcon from '@/components/icons/TrashCanOutlineIcon'
 import type { Recipe } from '../types'
+import { useDeleteRecipe } from '../hooks/useDeleteRecipe'
+import { useDuplicateRecipe } from '../hooks/useDuplicateRecipe'
 
 type Props = {
     recipe: Recipe | null
@@ -11,7 +13,10 @@ type Props = {
     isEditing: boolean
 }
 
-export default function RecipeDropdown({ isEditing, startEditing }: Props) {
+export default function RecipeDropdown({ recipe, isEditing, startEditing }: Props) {
+    const { deleteRecipe } = useDeleteRecipe()
+    const { duplicateRecipe } = useDuplicateRecipe()
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger
@@ -25,10 +30,19 @@ export default function RecipeDropdown({ isEditing, startEditing }: Props) {
                 <DropdownMenuItem onClick={startEditing}>
                     <FileEditsOutlineIcon width="16" height="16" fill={'var(--color-black)'} /> Edit recipe
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => {
+                        duplicateRecipe(recipe!.id)
+                    }}
+                >
                     <ClipboardIcon width="16" height="16" fill={'var(--color-black)'} /> Duplicate recipe
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-red">
+                <DropdownMenuItem
+                    onClick={() => {
+                        deleteRecipe(recipe!.id)
+                    }}
+                    className="text-red hover:text-red"
+                >
                     <TrashCanOutlineIcon width="16" height="16" fill={'var(--color-red)'} /> Delete recipe
                 </DropdownMenuItem>
             </DropdownMenuContent>
