@@ -4,7 +4,7 @@ import MainNav from './components/MainNav'
 import ProfileNav from './components/ProfileNav'
 
 export default function Sidebar() {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return (
         <>
@@ -42,7 +42,7 @@ export default function Sidebar() {
                     <Logo />
                 </div>
                 <div className="flex-1 mt-6">
-                    <MainNav />
+                    <MainNav onClose={() => setIsOpen(false)} />
                 </div>
                 <ProfileNav />
             </div>

@@ -8,6 +8,15 @@ export default function ProfileNav() {
     const name = user?.user_metadata.full_name || 'User'
     return (
         <div className="mt-auto">
+            <div className="flex mb-2 px-4">
+                <BaseButton
+                    className="bg-green hover:bg-green/80 text-light-green"
+                    disabled={isPending}
+                    onClick={() => logout()}
+                >
+                    Log out
+                </BaseButton>
+            </div>
             <div className="flex gap-2 items-center px-4 py-2 transition-all hover:bg-light-grey-2 rounded-lg">
                 <div className="size-15 flex items-center justify-center font-semibold text-green text-lg rounded-full bg-white shrink-0">
                     {name
@@ -16,15 +25,6 @@ export default function ProfileNav() {
                         .join('')}
                 </div>
                 <div className="text-lg">{name}</div>
-            </div>
-            <div className="flex mt-2 px-4">
-                <BaseButton
-                    className="bg-green hover:bg-green/80 text-light-green"
-                    disabled={isPending}
-                    onClick={() => logout()}
-                >
-                    Log out
-                </BaseButton>
             </div>
         </div>
     )

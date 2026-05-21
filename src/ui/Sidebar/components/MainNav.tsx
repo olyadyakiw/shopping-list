@@ -18,7 +18,11 @@ const links = [
     },
 ]
 
-export default function MainNav() {
+type Props = {
+    onClose: () => void
+}
+
+export default function MainNav({ onClose }: Props) {
     return (
         <nav>
             <ul className="flex flex-col gap-2">
@@ -26,6 +30,7 @@ export default function MainNav() {
                     <li key={link.to}>
                         <NavLink
                             to={link.to}
+                            onClick={onClose}
                             className={({ isActive }) =>
                                 `flex items-center gap-3 px-4 py-3 transition-all hover:bg-light-grey-2 rounded-[20px] ${isActive ? 'bg-medium-grey text-black' : 'text-dark-grey'}`
                             }
