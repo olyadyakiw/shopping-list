@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog-base-ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { InputField } from '@/ui/Input'
 import BaseButton from '@/ui/BaseButton'
@@ -12,7 +12,18 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import type { Ingredient } from '../types'
+
+function AutoFocusPlugin({ shouldFocus }: { shouldFocus: boolean }) {
+    const [editor] = useLexicalComposerContext()
+    useEffect(() => {
+        if (shouldFocus) {
+            setTimeout(() => editor.focus(), 0)
+        }
+    }, [shouldFocus, editor])
+    return null
+}
 
 type Props = {
     open: boolean
@@ -32,6 +43,7 @@ export default function AddRecipeModal({ open, onClose }: Props) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [ingredients, setIngredients] = useState<Ingredient[]>([])
+    const [activeTab, setActiveTab] = useState('ingridients')
 
     function handleSave() {
         createRecipe({ title, description, ingredients }, { onSuccess: onClose })
@@ -67,10 +79,15 @@ export default function AddRecipeModal({ open, onClose }: Props) {
                         value={title}
                         onChange={e => setTitle(e.target.value)}
                         inputClassName="md:text-2xl text-black"
-                        placeholder="Recipe title"
+                        placeholder="Type recipe title..."
                     />
                 </DialogHeader>
-                <Tabs defaultValue="ingridients" className="w-full gap-4">
+                <Tabs
+                    defaultValue="ingridients"
+                    className="w-full gap-4"
+                    value={activeTab}
+                    onValueChange={setActiveTab}
+                >
                     <TabsList>
                         <TabsTrigger value="ingridients">Ingridients</TabsTrigger>
                         <TabsTrigger value="directions">Directions</TabsTrigger>
@@ -101,8 +118,8 @@ export default function AddRecipeModal({ open, onClose }: Props) {
                         <LexicalComposer initialConfig={initialConfig}>
                             <PlainTextPlugin
                                 contentEditable={
-                                    <div className="h-82.5 p-6 bg-white rounded-[20px] overflow-y-scroll">
-                                        <ContentEditable />
+                                    <div className="h-82.5 bg-white rounded-[20px] overflow-y-scroll">
+                                        <ContentEditable autoFocus className="h-full p-6 rounded-[20px]" />
                                     </div>
                                 }
                                 ErrorBoundary={LexicalErrorBoundary}
@@ -111,6 +128,7 @@ export default function AddRecipeModal({ open, onClose }: Props) {
                             <OnChangePlugin
                                 onChange={editorState => setDescription(JSON.stringify(editorState.toJSON()))}
                             />
+                            <AutoFocusPlugin shouldFocus={activeTab === 'directions'} />
                         </LexicalComposer>
                     </TabsContent>
                 </Tabs>
