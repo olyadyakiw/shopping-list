@@ -4,11 +4,11 @@ import RecipePreview from './components/RecipePreview'
 import { useRecipes } from './hooks/useRecipes'
 
 export default function RecipesList() {
-    const { recipes } = useRecipes()
+    const { recipes, isLoading } = useRecipes()
     const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null)
     const selectedRecipe = recipes.find(r => r.id === selectedRecipeId) ?? null
 
-    return (
+    return !isLoading ? (
         <>
             <div className="grid grid-cols-3 gap-4">
                 {recipes.map(recipe => (
@@ -23,5 +23,7 @@ export default function RecipesList() {
 
             <RecipePreview recipe={selectedRecipe} open={!!selectedRecipe} onClose={() => setSelectedRecipeId(null)} />
         </>
+    ) : (
+        <div>Loading...</div>
     )
 }

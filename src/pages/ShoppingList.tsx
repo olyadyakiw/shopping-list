@@ -16,9 +16,6 @@ export default function ShoppingList() {
                     <div className="lg:col-start-1 lg:row-start-2">
                         <AddNewProduct />
                     </div>
-                    <div className="lg:col-start-1 lg:row-start-3">
-                        <AddNewProduct />
-                    </div>
                 </div>
             </section>
         </div>

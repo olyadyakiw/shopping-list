@@ -20,36 +20,38 @@ export default function ProductsList() {
     return (
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }} gutterBreakPoints={{ 360: 16, 750: 20 }}>
             <Masonry gutter="32px">
-                {!isLoading
-                    ? Object.entries(groupedProducts).map(([category, items]) => {
-                          const color = categoryOptions.find(cat => cat.val === category)?.color
-                          return (
-                              <div key={category} className="w-full">
-                                  <h2
-                                      className={`py-2 bg-${color} text-white w-full text-center font-semibold text-xl rounded-[8px] mb-2`}
-                                  >
-                                      {category}
-                                  </h2>
-                                  <ul>
-                                      {items.map((product: ProductType, index: number) => {
-                                          return (
-                                              <Product
-                                                  id={product.id}
-                                                  key={`${product.name}-${index}`}
-                                                  name={product.name}
-                                                  count={product.count}
-                                                  category={product.category}
-                                                  units={product.units}
-                                                  isChecked={product.isChecked}
-                                                  color={color}
-                                              />
-                                          )
-                                      })}
-                                  </ul>
-                              </div>
-                          )
-                      })
-                    : 'Loading...'}
+                {!isLoading ? (
+                    Object.entries(groupedProducts).map(([category, items]) => {
+                        const color = categoryOptions.find(cat => cat.val === category)?.color
+                        return (
+                            <div key={category} className="w-full">
+                                <h2
+                                    className={`py-2 bg-${color} text-white w-full text-center font-semibold text-xl rounded-[8px] mb-2`}
+                                >
+                                    {category}
+                                </h2>
+                                <ul>
+                                    {items.map((product: ProductType, index: number) => {
+                                        return (
+                                            <Product
+                                                id={product.id}
+                                                key={`${product.name}-${index}`}
+                                                name={product.name}
+                                                count={product.count}
+                                                category={product.category}
+                                                units={product.units}
+                                                isChecked={product.isChecked}
+                                                color={color}
+                                            />
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        )
+                    })
+                ) : (
+                    <div>Loading...</div>
+                )}
             </Masonry>
         </ResponsiveMasonry>
     )

@@ -77,13 +77,15 @@ export default function AddNewProduct() {
                     onSearchChange={setSearchText}
                     options={catalog.map(item => item.name)}
                     inputValue={searchText}
+                    isShowModal={isShowModal}
+                    searchText={searchText}
                     emptyContent={
                         <BaseButton
                             className="bg-green hover:bg-green/80 text-light-green"
                             type="button"
                             onClick={() => isShowModal(true)}
                         >
-                            Add "{searchText}"
+                            Add {searchText}
                         </BaseButton>
                     }
                 />
