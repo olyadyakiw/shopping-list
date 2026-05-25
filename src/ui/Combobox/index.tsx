@@ -14,11 +14,11 @@ type ComboboxProps<T extends string> = {
     value: T
     onChange: (value: T) => void
     options: string[]
-    isShowModal: (value: boolean) => void
     inputValue?: string
     emptyContent?: React.ReactNode
     onSearchChange?: (value: string) => void
     label?: string
+    isShowModal?: (value: boolean) => void
     searchText?: string
 }
 
@@ -63,7 +63,7 @@ export default function ComboboxBasic<T extends string>({
                                 <BaseButton
                                     className="bg-green hover:bg-green/80 text-light-green w-full"
                                     type="button"
-                                    onClick={() => isShowModal(true)}
+                                    onClick={() => isShowModal!(true)}
                                 >
                                     Add {searchText || 'new product'}
                                 </BaseButton>
