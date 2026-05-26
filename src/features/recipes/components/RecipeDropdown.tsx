@@ -6,6 +6,7 @@ import TrashCanOutlineIcon from '@/components/icons/TrashCanOutlineIcon'
 import type { Recipe } from '../types'
 import { useDeleteRecipe } from '../hooks/useDeleteRecipe'
 import { useDuplicateRecipe } from '../hooks/useDuplicateRecipe'
+import { toast } from 'sonner'
 
 type Props = {
     recipe: Recipe | null
@@ -40,8 +41,9 @@ export default function RecipeDropdown({ recipe, isEditing, startEditing }: Prop
                 <DropdownMenuItem
                     onClick={() => {
                         deleteRecipe(recipe!.id)
+                        toast.success('Recipe has been deleted')
                     }}
-                    className="text-red hover:text-red"
+                    className="text-red focus:text-red"
                 >
                     <TrashCanOutlineIcon width="16" height="16" fill={'var(--color-red)'} /> Delete recipe
                 </DropdownMenuItem>

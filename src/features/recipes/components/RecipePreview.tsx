@@ -79,7 +79,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent
-                className="flex flex-col sm:max-w-175 max-h-140 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
+                className="flex flex-col sm:max-w-175 max-h-150 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
                 showCloseButton={false}
             >
                 <DialogHeader>
@@ -155,18 +155,18 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                         </LexicalComposer>
                     </TabsContent>
                 </Tabs>
-                <div className="flex gap-2 justify-between mt-auto">
+                <div className="flex flex-col md:flex-row gap-2 justify-between mt-auto">
                     {isEditing ? (
                         <>
                             <BaseButton
                                 onClick={handleSaveButton}
-                                className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
+                                className="bg-green hover:bg-green/80 text-light-green max-w-full md:max-w-[50%] w-full"
                             >
                                 Save changes
                             </BaseButton>
                             <BaseButton
                                 onClick={cancel}
-                                className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full"
+                                className="bg-black hover:bg-black/80 text-white max-w-full md:max-w-[50%] w-full"
                                 type="button"
                             >
                                 Cancel Edits
@@ -176,7 +176,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                         <>
                             <BaseButton
                                 onClick={handleAddButton}
-                                className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
+                                className="bg-green hover:bg-green/80 text-light-green max-w-full md:max-w-[50%] w-full"
                             >
                                 <CiSquarePlus className="size-6 text-light-green" />
                                 Add To Shopping List
@@ -186,7 +186,7 @@ export default function RecipePreview({ recipe, open, onClose }: Props) {
                                     e.preventDefault()
                                     onClose()
                                 }}
-                                className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full"
+                                className="bg-black hover:bg-black/80 text-white max-w-full md:max-w-[50%] w-full"
                                 type="button"
                             >
                                 Cancel

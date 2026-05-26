@@ -132,14 +132,17 @@ export default function AddRecipeModal({ open, onClose }: Props) {
                         </LexicalComposer>
                     </TabsContent>
                 </Tabs>
-                <div className="flex gap-2 justify-between mt-auto">
+                <div className="flex flex-col md:flex-row gap-2 justify-between mt-auto">
                     <BaseButton
                         onClick={handleSave}
-                        className="bg-green hover:bg-green/80 text-light-green max-w-[50%] w-full"
+                        className="bg-green hover:bg-green/80 text-light-green max-w-full md:max-w-[50%] w-full"
                     >
                         Save Recipe
                     </BaseButton>
-                    <BaseButton onClick={onClose} className="bg-black hover:bg-black/80 text-white max-w-[50%] w-full">
+                    <BaseButton
+                        onClick={onClose}
+                        className="bg-black hover:bg-black/80 text-white max-w-full md:max-w-[50%] w-full"
+                    >
                         Cancel
                     </BaseButton>
                 </div>

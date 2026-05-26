@@ -5,12 +5,12 @@ import { FiPlus, FiMinus } from 'react-icons/fi'
 type Props = {
     servings: number
     onServings: (fn: (prev: number) => number) => void
-    isEditing: boolean
+    isEditing?: boolean
 }
 
 export default function ServingsSelector({ servings, onServings, isEditing }: Props) {
     return (
-        <ButtonGroup className="flex items-center gap-2">
+        <ButtonGroup className="flex items-center gap-2 relative z-1">
             <BaseButton
                 className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-gre p-0"
                 onClick={() =>

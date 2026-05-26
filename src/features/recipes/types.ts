@@ -4,6 +4,8 @@ export type Recipe = {
     description: string
     ingredients: Ingredient[]
     direction: string
+    category: string
+    image: string
 }
 
 export type Ingredient = {
