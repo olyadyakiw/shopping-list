@@ -21,11 +21,11 @@ export default function RecipeDropdown({ recipe, isEditing, startEditing }: Prop
     return (
         <DropdownMenu>
             <DropdownMenuTrigger
-                className={`size-8 hover:bg-medium-grey rounded-full p-1.5 ${isEditing ? 'opacity-50 cursor-auto bg-medium-grey' : 'opacity-100 cursor-pointer bg-transparent'}`}
+                className={`size-8 hover:bg-green rounded-full p-1.5 ${isEditing ? 'opacity-50 cursor-auto bg-green' : 'opacity-100 cursor-pointer bg-transparent'}`}
                 asChild
                 disabled={isEditing}
             >
-                <BsThreeDotsVertical />
+                <BsThreeDotsVertical fill={'var(--color-white)'} />
             </DropdownMenuTrigger>
             <DropdownMenuContent side="bottom" align="end">
                 <DropdownMenuItem onClick={startEditing}>

@@ -6,6 +6,7 @@ export function useEditRecipe(recipe: Recipe | null) {
     const [isEditing, setIsEditing] = useState(false)
     const [editedTitle, setEditedTitle] = useState('')
     const [editedDescription, setEditedDescription] = useState('')
+    const [editedRecipeCategory, setEditedRecipeCategory] = useState('')
     const [editedIngredients, setEditedIngredients] = useState<Ingredient[]>([])
 
     const startEditing = () => {
@@ -13,6 +14,7 @@ export function useEditRecipe(recipe: Recipe | null) {
         setIsEditing(true)
         setEditedTitle(recipe.title)
         setEditedDescription(recipe.description)
+        setEditedRecipeCategory(recipe.category)
         setEditedIngredients(structuredClone(recipe.ingredients))
     }
 
@@ -21,6 +23,7 @@ export function useEditRecipe(recipe: Recipe | null) {
         setEditedIngredients([])
         setEditedTitle('')
         setEditedDescription('')
+        setEditedRecipeCategory('')
     }
 
     const removeIngredients = (id: number) => {
@@ -54,6 +57,8 @@ export function useEditRecipe(recipe: Recipe | null) {
         editedTitle,
         editedDescription,
         setEditedDescription,
+        editedRecipeCategory,
+        setEditedRecipeCategory,
         editedIngredients,
         startEditing,
         cancel,

@@ -18,18 +18,18 @@ export async function updateRecipe({
     id,
     title,
     description,
+    category,
     ingredients,
 }: {
     id: number
     title: string
     description: string
+    category: string
     ingredients: Ingredient[]
 }) {
-    const { error: titleError } = await supabase.from('recipes').update({ title }).eq('id', id)
-    const { error: descriptionError } = await supabase.from('recipes').update({ description }).eq('id', id)
+    const { error: recipeError } = await supabase.from('recipes').update({ title, description, category }).eq('id', id)
 
-    if (titleError) throw new Error('Recipe title could not be updated')
-    if (descriptionError) throw new Error('Recipe description could not be updated')
+    if (recipeError) throw new Error('Recipe could not be updated')
 
     const { error: deleteError } = await supabase.from('ingredients').delete().eq('recipe_id', id)
 

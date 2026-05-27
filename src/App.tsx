@@ -3,7 +3,6 @@ import AppLayout from './ui/AppLayout'
 import ShoppingList from './pages/ShoppingList'
 import Templates from './pages/Templates'
 import Recipes from './pages/Recipes'
-import NewRecipe from './pages/NewPesipe'
 import PageNotFound from './pages/PageNotFound'
 import Login from './pages/Login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -27,7 +26,6 @@ function App() {
                         <Route index element={<Navigate replace to="shopping-list" />} />
                         <Route path="shopping-list" element={<ShoppingList />} />
                         <Route path="recipes" element={<Recipes />} />
-                        <Route path="recepies/new" element={<NewRecipe />} />
                         <Route path="templates" element={<Templates />} />
                     </Route>
 

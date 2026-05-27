@@ -6,13 +6,14 @@ type Props = {
     servings: number
     onServings: (fn: (prev: number) => number) => void
     isEditing?: boolean
+    variant?: string
 }
 
-export default function ServingsSelector({ servings, onServings, isEditing }: Props) {
+export default function ServingsSelector({ servings, onServings, isEditing, variant }: Props) {
     return (
         <ButtonGroup className="flex items-center gap-2 relative z-1">
             <BaseButton
-                className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-gre p-0"
+                className={`flex items-center justify-center size-7 rounded-full ${variant === 'white' ? 'bg-white' : 'bg-medium-grey'} text-black border text-xl hover:bg-dark-grey p-0`}
                 onClick={() =>
                     onServings(s => {
                         if (s > 1) return s - 1
@@ -23,11 +24,14 @@ export default function ServingsSelector({ servings, onServings, isEditing }: Pr
             >
                 <FiMinus />
             </BaseButton>
-            <span className="text-center text-sm flex flex-col">
-                <span className="text-lg leading-[0.75]">{servings}</span> servings
+            <span className={`text-center text-sm flex flex-col ${variant === 'white' ? 'text-white' : ''}`}>
+                <span className="text-lg leading-[0.75]${variant === 'white' ? 'bg-white' : 'bg-medium-grey'}">
+                    {servings}
+                </span>{' '}
+                servings
             </span>
             <BaseButton
-                className="flex items-center justify-center size-7 rounded-full bg-medium-grey text-black border text-xl hover:bg-dark-grey p-0"
+                className={`flex items-center justify-center size-7 rounded-full ${variant === 'white' ? 'bg-white' : 'bg-medium-grey'} text-black border text-xl hover:bg-dark-grey p-0`}
                 onClick={() => onServings(s => s + 1)}
                 disabled={isEditing}
             >
