@@ -15,10 +15,10 @@ type SelectProps<T extends string> = {
 
 export default function SelectField<T extends string>({ label, value, onChange, options }: SelectProps<T>) {
     return (
-        <label className="flex flex-col gap-1 mb-2">
+        <div className="flex flex-col gap-1 mb-2">
             {label ? <span className="text-base">{label}:</span> : null}
             <Select value={value} onValueChange={onChange}>
-                <SelectTrigger className="w-full bg-white">
+                <SelectTrigger className="w-full min-w-32 bg-white text-black">
                     <SelectValue placeholder={`Select ${label}`} />
                 </SelectTrigger>
                 <SelectContent>
@@ -31,6 +31,6 @@ export default function SelectField<T extends string>({ label, value, onChange, 
                     </SelectGroup>
                 </SelectContent>
             </Select>
-        </label>
+        </div>
     )
 }

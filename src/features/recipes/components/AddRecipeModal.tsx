@@ -1,9 +1,10 @@
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog-base-ui'
 import { useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { InputField } from '@/ui/Input'
 import BaseButton from '@/ui/BaseButton'
-import { CiSquarePlus } from 'react-icons/ci'
+import { CiImport, CiSquarePlus } from 'react-icons/ci'
 import { useCreateRecipe } from '../hooks/useCreateRecipe'
 import EditableIngredient from './EditableIngredient'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -14,6 +15,9 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import type { Ingredient } from '../types'
+import SelectField from '@/ui/Select'
+import { recipeCategoryOption } from '@/constants/unitsOption'
+import { toast } from 'sonner'
 
 function AutoFocusPlugin({ shouldFocus }: { shouldFocus: boolean }) {
     const [editor] = useLexicalComposerContext()
@@ -39,14 +43,68 @@ const EMPTY_INGREDIENT = (): Ingredient => ({
 })
 
 export default function AddRecipeModal({ open, onClose }: Props) {
-    const { createRecipe } = useCreateRecipe()
+    const { createRecipe, isPending } = useCreateRecipe()
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
+    const [categoryRecipe, setCategoryRecipe] = useState('breakfast')
+    const [imageFile, setImageFile] = useState<File | null>(null)
+    const [imagePreview, setImagePreview] = useState('')
     const [ingredients, setIngredients] = useState<Ingredient[]>([])
     const [activeTab, setActiveTab] = useState('ingridients')
 
+    useEffect(() => {
+        if (!imagePreview.startsWith('blob:')) return
+
+        return () => URL.revokeObjectURL(imagePreview)
+    }, [imagePreview])
+
     function handleSave() {
-        createRecipe({ title, description, ingredients }, { onSuccess: onClose })
+        if (!title.trim()) {
+            toast.error('Recipe title is required')
+            return
+        }
+
+        if (!imageFile) {
+            toast.error('Recipe image is required')
+            return
+        }
+
+        createRecipe(
+            { title: title.trim(), description, category: categoryRecipe, imageFile, ingredients },
+            {
+                onSuccess: () => {
+                    resetForm()
+                    onClose()
+                },
+                onError: error => {
+                    toast.error(error.message)
+                },
+            },
+        )
+    }
+
+    function handleClose() {
+        resetForm()
+        onClose()
+    }
+
+    function resetForm() {
+        setTitle('')
+        setDescription('')
+        setCategoryRecipe('breakfast')
+        setImageFile(null)
+        setImagePreview('')
+        setIngredients([])
+        setActiveTab('ingridients')
+    }
+
+    function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setImageFile(file)
+        setImagePreview(URL.createObjectURL(file))
+        e.target.value = ''
     }
 
     function addIngredient() {
@@ -68,19 +126,48 @@ export default function AddRecipeModal({ open, onClose }: Props) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={onClose}>
+        <Dialog open={open} onOpenChange={isOpen => !isOpen && handleClose()}>
             <DialogContent
-                className="flex flex-col sm:max-w-175 max-h-140 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
+                className="flex flex-col sm:max-w-175 max-h-190 h-full sm:px-7.5 sm:py-6 bg-light-grey gap-4 overflow-y-scroll"
                 showCloseButton={false}
             >
-                <DialogHeader>
-                    <InputField
-                        className="mb-0 max-w-75"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        inputClassName="md:text-2xl text-black"
-                        placeholder="Type recipe title..."
-                    />
+                <DialogHeader
+                    className="relative min-h-58 bg-no-repeat bg-cover bg-center rounded-[20px] p-5 overflow-hidden"
+                    style={imagePreview ? { backgroundImage: `url(${imagePreview})` } : undefined}
+                >
+                    <div className="absolute inset-0 bg-black/40" />
+                    <div className="relative z-10 flex justify-between h-full flex-col">
+                        <div className="flex justify-between items-start gap-4 text-white">
+                            <SelectField
+                                value={categoryRecipe}
+                                onChange={value => setCategoryRecipe(value)}
+                                options={recipeCategoryOption}
+                            />
+                        </div>
+                        <input
+                            id="recipe-image-upload"
+                            className="sr-only"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        <label
+                            htmlFor="recipe-image-upload"
+                            className="absolute top-1/2 left-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center gap-3 text-2xl font-medium text-white transition hover:text-white/80"
+                        >
+                            <span className="flex size-8 items-center justify-center rounded bg-white/70 text-gray-500">
+                                <CiImport className="size-7" />
+                            </span>
+                            {imageFile ? 'Change the image' : 'Upload the image'}
+                        </label>
+                        <InputField
+                            className="mb-0 max-w-75"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                            inputClassName="md:text-2xl text-black"
+                            placeholder="Type recipe title..."
+                        />
+                    </div>
                 </DialogHeader>
                 <Tabs
                     defaultValue="ingridients"
@@ -135,12 +222,14 @@ export default function AddRecipeModal({ open, onClose }: Props) {
                 <div className="flex flex-col md:flex-row gap-2 justify-between mt-auto">
                     <BaseButton
                         onClick={handleSave}
+                        disabled={isPending}
                         className="bg-green hover:bg-green/80 text-light-green max-w-full md:max-w-[50%] w-full"
                     >
-                        Save Recipe
+                        {isPending ? 'Saving...' : 'Save Recipe'}
                     </BaseButton>
                     <BaseButton
-                        onClick={onClose}
+                        onClick={handleClose}
+                        disabled={isPending}
                         className="bg-black hover:bg-black/80 text-white max-w-full md:max-w-[50%] w-full"
                     >
                         Cancel

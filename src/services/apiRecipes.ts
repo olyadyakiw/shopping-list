@@ -1,6 +1,24 @@
 import type { Ingredient } from '@/features/recipes/types'
 import supabase from './supabase'
 
+async function uploadRecipeImage(userId: string, imageFile: File) {
+    const safeFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '-')
+    const imagePath = `${userId}/${Date.now()}-${safeFileName}`
+    const { error: uploadError } = await supabase.storage.from('recipes_images').upload(imagePath, imageFile, {
+        cacheControl: '3600',
+        contentType: imageFile.type,
+        upsert: false,
+    })
+
+    if (uploadError) throw new Error(uploadError.message || 'Recipe image could not be uploaded')
+
+    const {
+        data: { publicUrl },
+    } = supabase.storage.from('recipes_images').getPublicUrl(imagePath)
+
+    return publicUrl
+}
+
 export async function getRecipes() {
     const { data, error } = await supabase
         .from('recipes')
@@ -19,15 +37,31 @@ export async function updateRecipe({
     title,
     description,
     category,
+    imageFile,
     ingredients,
 }: {
     id: number
     title: string
     description: string
     category: string
+    imageFile?: File | null
     ingredients: Ingredient[]
 }) {
-    const { error: recipeError } = await supabase.from('recipes').update({ title, description, category }).eq('id', id)
+    const updates: { title: string; description: string; category: string; image?: string } = {
+        title,
+        description,
+        category,
+    }
+
+    if (imageFile) {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
+
+        updates.image = await uploadRecipeImage(user!.id, imageFile)
+    }
+
+    const { error: recipeError } = await supabase.from('recipes').update(updates).eq('id', id)
 
     if (recipeError) throw new Error('Recipe could not be updated')
 
@@ -49,19 +83,25 @@ export async function updateRecipe({
 export async function createRecipe({
     title,
     description,
+    category,
+    imageFile,
     ingredients,
 }: {
     title: string
     description: string
+    category: string
+    imageFile: File
     ingredients: Ingredient[]
 }) {
     const {
         data: { user },
     } = await supabase.auth.getUser()
 
+    const publicUrl = await uploadRecipeImage(user!.id, imageFile)
+
     const { data, error } = await supabase
         .from('recipes')
-        .insert({ title, description: description || '', user_id: user!.id })
+        .insert({ title, description: description || '', category, image: publicUrl, user_id: user!.id })
         .select()
         .single()
 
@@ -101,7 +141,13 @@ export async function duplicateRecipe(id: number) {
 
     const { data: newRecipe, error: insertError } = await supabase
         .from('recipes')
-        .insert({ title: `${recipe.title} (copy)`, description: recipe.description, user_id: user!.id })
+        .insert({
+            title: `${recipe.title} (copy)`,
+            description: recipe.description,
+            category: recipe.category,
+            image: recipe.image,
+            user_id: user!.id,
+        })
         .select()
         .single()
 
