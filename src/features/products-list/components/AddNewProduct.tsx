@@ -90,6 +90,7 @@ export default function AddNewProduct() {
                     }
                 />
                 <InputField
+                    className="mt-4"
                     fieldName="Count"
                     placeholder=""
                     type="number"

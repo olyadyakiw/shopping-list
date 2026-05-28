@@ -11,13 +11,24 @@ import redAppleUrl from '/products-images/red_apple.svg'
 
 const PRODUCT_IMAGES: string[] = [bananaUrl, breadUrl, greenAppleUrl, ketchupUrl, milkUrl, pepperUrl, redAppleUrl]
 
+const PRODUCT_BODY_OPTIONS: Matter.IChamferableBodyDefinition = {
+    restitution: 0.3,
+    friction: 0.5,
+    frictionAir: 0.01,
+    density: 0.001,
+    render: {
+        visible: false,
+    },
+}
+
 interface ImageBody extends Matter.Body {
     img: HTMLImageElement
-    imgSize: number
+    imgWidth: number
+    imgHeight: number
 }
 
 function isImageBody(body: Matter.Body): body is ImageBody {
-    return 'img' in body && 'imgSize' in body
+    return 'img' in body && 'imgWidth' in body && 'imgHeight' in body
 }
 
 export function useFallingProductsScene(sceneRef: RefObject<HTMLDivElement | null>) {
@@ -94,24 +105,25 @@ export function useFallingProductsScene(sceneRef: RefObject<HTMLDivElement | nul
                 if (!img) return
 
                 const x = 80 + Math.random() * (W - 160)
-                const size = 120 + Math.random() * 50
+                const width = img.naturalWidth || img.width
+                const height = img.naturalHeight || img.height
+                const maxSize = Math.max(width, height)
 
-                const collisionRadius = size * 0.4
+                const body =
+                    src === milkUrl
+                        ? Matter.Bodies.rectangle(x, -height / 2, width, height, {
+                              ...PRODUCT_BODY_OPTIONS,
+                              chamfer: { radius: 10 },
+                          })
+                        : Matter.Bodies.circle(x, -maxSize / 2, maxSize * 0.4, PRODUCT_BODY_OPTIONS)
 
-                const body = Matter.Bodies.circle(x, -60, collisionRadius, {
-                    restitution: 0.3,
-                    friction: 0.5,
-                    frictionAir: 0.01,
-                    density: 0.001,
-                    render: {
-                        visible: false,
-                    },
-                }) as ImageBody
+                const imageBody = body as ImageBody
 
-                body.img = img
-                body.imgSize = size
+                imageBody.img = img
+                imageBody.imgWidth = width
+                imageBody.imgHeight = height
 
-                Matter.World.add(engine.world, body)
+                Matter.World.add(engine.world, imageBody)
 
                 spawnCount++
             }, 400)
@@ -125,10 +137,11 @@ export function useFallingProductsScene(sceneRef: RefObject<HTMLDivElement | nul
                 engine.world.bodies.forEach(body => {
                     if (!isImageBody(body)) return
 
-                    const radius = body.imgSize / 2
-                    const x = Math.min(Math.max(body.position.x, radius), W - radius)
-                    const minY = body.position.y < radius && body.velocity.y > 0 ? body.position.y : radius
-                    const y = Math.min(Math.max(body.position.y, minY), H - radius)
+                    const halfWidth = (body.bounds.max.x - body.bounds.min.x) / 2
+                    const halfHeight = (body.bounds.max.y - body.bounds.min.y) / 2
+                    const x = Math.min(Math.max(body.position.x, halfWidth), W - halfWidth)
+                    const minY = body.position.y < halfHeight && body.velocity.y > 0 ? body.position.y : halfHeight
+                    const y = Math.min(Math.max(body.position.y, minY), H - halfHeight)
                     const isOutOfBoundsX = x !== body.position.x
                     const isOutOfBoundsY = y !== body.position.y
 
@@ -154,25 +167,12 @@ export function useFallingProductsScene(sceneRef: RefObject<HTMLDivElement | nul
 
                     if (!body.img) return
 
-                    const maxSize = body.imgSize
-
-                    const aspect = body.img.width / body.img.height
-
-                    let drawWidth = maxSize
-                    let drawHeight = maxSize
-
-                    if (aspect > 1) {
-                        drawHeight = maxSize / aspect
-                    } else {
-                        drawWidth = maxSize * aspect
-                    }
-
                     ctx.save()
 
                     ctx.translate(body.position.x, body.position.y)
                     ctx.rotate(body.angle)
 
-                    ctx.drawImage(body.img, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight)
+                    ctx.drawImage(body.img, -body.imgWidth / 2, -body.imgHeight / 2, body.imgWidth, body.imgHeight)
 
                     ctx.restore()
                 })

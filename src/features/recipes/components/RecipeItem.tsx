@@ -22,7 +22,7 @@ function RecipeItem({ recipe, onPreview }: Props) {
     return (
         <Card className="relative">
             <CardHeader className="flex gap-5 h-full">
-                <img className="w-26.5 h-26.5 object-cover rounded-[20px]" src={recipe.image} />
+                <img className="w-26.5 h-26.5 object-cover rounded-[20px] shrink-0" src={recipe.image} />
                 <div className="flex flex-col gap-2 h-full justify-between w-full items-start">
                     <CardTitle>{recipe.title}</CardTitle>
                     <div className="bg-medium-grey px-3 py-1.5 rounded-[30px] text-sm font-semibold text-dark-grey">

@@ -12,7 +12,7 @@ export function InputField({ fieldName, error, className, inputClassName, ...res
     return (
         <Field className={`gap-2 mb-2 ${className}`}>
             {fieldName && (
-                <FieldLabel className="text-base font-normal" htmlFor={`input-field-${fieldName}`}>
+                <FieldLabel className="text-base font-semibold" htmlFor={`input-field-${fieldName}`}>
                     {fieldName}
                 </FieldLabel>
             )}
